@@ -18,6 +18,7 @@ function Homescreen() {
             console.log(error)
         }
     }
+    
     fetchData();
     
     }, [])
