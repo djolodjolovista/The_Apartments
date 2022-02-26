@@ -1,9 +1,9 @@
 
 import './App.css';
 import Navbar from './components/Navbar';
-import {BrowserRouter, Route, Link} from 'react-router-dom';
+import {BrowserRouter, Route, Link} from 'react-router-dom';/**BrowserRouter-It is the parent component that is used to store all of the other components. */
 import Homescreen from './screens/Homescreen';
-
+/**Route- Рута је условно приказана компонента заснована на подударању путање до УРЛ-а. */
 function App() {
   return (
     <div className="App">
@@ -16,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; /**In default export the naming of import is completely independent and we can use any name we like. */
