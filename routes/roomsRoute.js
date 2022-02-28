@@ -17,4 +17,18 @@ router.get('/getallrooms', async(req, res) => {
 
 });
 
+router.post('/getroombyid', async(req, res) => {
+
+    const roomid = req.body.roomid;
+
+    try {
+        const room = await Room.findOne({_id : roomid}) /*Room je model koji smo kreirali u models*/
+    /**Mogu se desiti error-i zato cemo staviti u try catch blok */
+    res.send(room)
+    } catch (error) {
+        return res.status(400).json({ message: error });
+    }
+
+});
+
 module.exports = router; /**Moramo ga exportovati jer cemo ga koristiti u server.js koji je entry-point nase node aplikacije */
