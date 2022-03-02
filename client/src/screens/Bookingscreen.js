@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"; /**axios je biblioteka koja sluzi za kreiranje http zahtjeva */
+import Loader from '../components/Loader';/**importovali smo komponentu Loader da bi je mogli koristiti */
+import Error from '../components/Error';
 
 
 
@@ -8,25 +10,27 @@ const [loading, setloading] = useState(true); /**kada je api request pokrenut lo
 const [error, seterror] = useState();
 const [room, setroom] = useState();
 
-useEffect(() => {
-  async function fetchData() {
-    try {
-      setloading(true); /**API request je pokrenut */
-      const data = (await axios.post("/api/rooms/getroombyid", {roomid: match.params.roomid})).data;
+async function fetchData() {
+  try {
+    setloading(true); /**API request je pokrenut */
+    const data = (await axios.post("/api/rooms/getroombyid", {roomid: match.params.roomid})).data;
 
-      setroom(data);
-      setloading(false); /**API request je zavrsen */
-    } catch (error) {
-      setloading(false);
-      seterror(true);
-    }
+    setroom(data);
+    setloading(false); /**API request je zavrsen */
+  } catch (error) {
+    setloading(false);
+    seterror(true);
   }
+}
+
+useEffect(() => {
   fetchData();
 }, []);
+/**Prvo provjeravamo loading pa onda room pa ako nista od toga nije true onda tek nek izbaci error ! */
   return (
     <div className='m-5'>
       
-      {loading ? (<h1>Loading...</h1>) : error ? (<h1>Error</h1>) : (<div>
+      {loading ? (<Loader />) : room ? (<div>
 
         <div className='row justify-content-center mt-5 bs'>
 
@@ -68,7 +72,7 @@ useEffect(() => {
 
         </div>
 
-      </div>)}
+      </div>) : (<Error />)}
 
     </div>
   );

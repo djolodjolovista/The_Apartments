@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Room from "../components/Room";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 function Homescreen() {
   const [rooms, setrooms] = useState([]);
@@ -28,14 +30,14 @@ function Homescreen() {
     fetchData();
   }, []);
                                /**className od div-ova je iz bootstrap */
+  /**Prvo provjeravamo Loading pa rooms pa ako nije nista od toga true onda tek error da izbaci ! */
+  /**.map()-koristimo da kreiramo listu od JSX elemenata */
   return (
     <div className="container">
       <div className="row justify-content-center mt-5">  
         {loading ? (
-          <h1>Loading...</h1>
-        ) : error ? (
-          <h1>Error</h1>
-        ) : (
+          <Loader />
+        ) : rooms.length>1 ? (
           rooms.map((room) => {
             return (
                 <div className="col-md-9 mt-2">
@@ -44,6 +46,8 @@ function Homescreen() {
                 </div>
             );
           })
+        ) : (
+          <Error />
         )}
       </div>
     </div>

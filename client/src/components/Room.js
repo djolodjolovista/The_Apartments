@@ -3,7 +3,7 @@ import {Modal, Button, Carousel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 
-function Room({ room }) {
+function Room({ room }) { /**room je prop */
     const [show, setShow] = useState(false); /**show=true prikazuje model popup, a false sakriva model popup (View Details) */
 
   const handleClose = () => setShow(false); /**da zatvorimo popup model (View Details) */
