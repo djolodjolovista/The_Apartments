@@ -3,7 +3,8 @@ import {Modal, Button, Carousel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 
-function Room({ room }) { /**room je prop */
+function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i todate) */
+//moramo kad kliknemo booknow da posaljemo ove props-e u url u bookingscreen
     const [show, setShow] = useState(false); /**show=true prikazuje model popup, a false sakriva model popup (View Details) */
 
   const handleClose = () => setShow(false); /**da zatvorimo popup model (View Details) */
@@ -22,7 +23,7 @@ function Room({ room }) { /**room je prop */
         </b>
 
         <div style={{ float: "right" }}>
-          <Link to={`/book/${room._id}`}>
+          <Link to={`/book/${room._id}/${fromdate}/${todate}`}>
             <button className="btn btn-primary m-2">Book Now</button>
           </Link>
           <button className="btn btn-primary" onClick={handleShow}>View Details</button>

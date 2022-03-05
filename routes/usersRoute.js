@@ -30,6 +30,7 @@ router.post('/login', async(req, res) => {
          
         }//stavili smo da vraca temp, a ne user da ne bi vracao password na frontend
         res.send(temp) //saljemo user-a na frontend ako je login success
+        
     }
     else { //tj ako nema user-a login je false pa treba error da vrati
         return res.status(400).json({message: 'Login faield'});

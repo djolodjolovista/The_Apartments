@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios"; /**axios je biblioteka koja sluzi za kreiranje http zahtjeva */
 import Loader from '../components/Loader';/**importovali smo komponentu Loader da bi je mogli koristiti */
 import Error from '../components/Error';
+import moment from 'moment';
 
 
 
@@ -9,6 +10,12 @@ function Bookingscreen({ match }) {
 const [loading, setloading] = useState(true); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
 const [error, seterror] = useState();
 const [room, setroom] = useState();
+
+const roomid = match.params.roomid;
+const fromdate = moment(match.params.fromdate, 'DD-MM-YYYY');//moramo formatirati u moment formatu da bi mogli kasnije primjenjivati moment f-je
+const todate = moment(match.params.todate, 'DD-MM-YYYY');
+
+const totaldays = moment.duration(todate.diff(fromdate)).asDays()+1//izracunava ukupan broj dana, diff razlika izmedju todate i fromdate
 
 async function fetchData() {
   try {
@@ -46,8 +53,8 @@ useEffect(() => {
 
               <b>
               <p>Name : </p>
-              <p>From Date : </p>
-              <p>To Date : </p>
+              <p>From Date : {match.params.fromdate} </p>
+              <p>To Date : {match.params.todate} </p>
               <p>Max Count : {room.maxcount}</p>
               </b>
               </div>
@@ -57,7 +64,7 @@ useEffect(() => {
                 <b>
                 <h1>Amount</h1>
                 <hr />
-                <p>Total days : </p>
+                <p>Total days : {totaldays} </p>
                 <p>Rent per day : {room.rentperday}</p>
                 <p>Total Amount : </p>
                 </b>
