@@ -71,3 +71,7 @@ h2 { /*naslov u register screen*/
   font-weight: bold !important;
   text-align: center;
 }
+
+.dropdown-toggle {
+  border: 0px solid black !important;
+}

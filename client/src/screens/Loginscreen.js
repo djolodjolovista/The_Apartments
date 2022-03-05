@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import Loader from '../components/Loader';/**importovali smo komponentu Loader da bi je mogli koristiti */
+import Error from '../components/Error';
 
 function Loginscreen() {
     
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
+    const [loading, setloading] = useState(false); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
+    const [error, seterror] = useState();
     
 
     async function Login() { //async jer koristimo await
@@ -17,19 +21,33 @@ function Loginscreen() {
                 
             }
             try {//ovo je API operacija
-                const result = await ( axios.post("/api/users/login", user)).data
+                setloading(true);
+                const result =  (await axios.post("/api/users/login", user)).data//await uvijek pisi unutar zagrada jer nece raditi
+                setloading(false)
+
+                localStorage.setItem('currentUser', JSON.stringify(result));//JSON.stringify jer mora biti string
+                //prije navigacije na home page moramo sacuvati user-a na local storage
+                //to nam omogucava da pristupimo user-u bilo gdje u aplikaciji
+                window.location.href = '/home'; //da nas prebaci na home page
+               
                   
             } catch (error) {
                 console.log(error)
+                setloading(false)
+                seterror(true)
+                
             }
-            console.log(user);
+            
         
     }
 
   return (
     <div>
+        {loading && (<Loader />)}
+        
         <div className="row justify-content-center mt-5">
             <div className='col-md-5 mt-5'>
+            {error && (<Error message='Invalid Credentionals' />)}
 
                 <div className='bs'>
                     <h2>Login</h2>
