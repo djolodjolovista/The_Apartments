@@ -16,6 +16,7 @@ const fromdate = moment(match.params.fromdate, 'DD-MM-YYYY');//moramo formatirat
 const todate = moment(match.params.todate, 'DD-MM-YYYY');
 
 const totaldays = moment.duration(todate.diff(fromdate)).asDays()+1//izracunava ukupan broj dana, diff razlika izmedju todate i fromdate
+const [totalamount, settotalamount] = useState();
 
 async function fetchData() {
   try {
@@ -23,6 +24,7 @@ async function fetchData() {
     const data = (await axios.post("/api/rooms/getroombyid", {roomid: match.params.roomid})).data;
 
     setroom(data);
+    settotalamount(totaldays * data.rentperday);
     setloading(false); /**API request je zavrsen */
   } catch (error) {
     setloading(false);
@@ -30,9 +32,32 @@ async function fetchData() {
   }
 }
 
+
 useEffect(() => {
   fetchData();
+  
 }, []);
+const currentUser = JSON.parse(localStorage.getItem('currentUser'))//podaci ulogovanog korisnika
+async function bookRoom() { //moramo posalti podatke na backend pa onda u bazu
+
+  const bookingDetails = {//ovo je objekat koji cemo slati na backend (u formi modela)
+
+    room, //room je objekat iz useState-a koji smo dobili iz backenda
+    userid: JSON.parse(localStorage.getItem('currentUser'))._id,
+    fromdate,
+    todate,
+    totalamount,
+    totaldays
+
+  } 
+  try {
+    const result = await axios.post('/api/bookings/bookroom', bookingDetails); //prvo napravimo bookingsRoute na backendu pa onda pisemo ovdje URL
+  } catch (error) {                      //stavili smo ovaj url kao na backendu tj slican
+    
+  }
+
+}
+
 /**Prvo provjeravamo loading pa onda room pa ako nista od toga nije true onda tek nek izbaci error ! */
   return (
     <div className='m-5'>
@@ -52,7 +77,7 @@ useEffect(() => {
               <hr />
 
               <b>
-              <p>Name : </p>
+              <p>Name : {currentUser.name} </p>
               <p>From Date : {match.params.fromdate} </p>
               <p>To Date : {match.params.todate} </p>
               <p>Max Count : {room.maxcount}</p>
@@ -66,12 +91,12 @@ useEffect(() => {
                 <hr />
                 <p>Total days : {totaldays} </p>
                 <p>Rent per day : {room.rentperday}</p>
-                <p>Total Amount : </p>
+                <p>Total Amount : {totalamount} </p>
                 </b>
               </div>
 
               <div style={{float: 'right'}}>
-                <button className='btn btn-primary'>Pay Now</button>
+                <button className='btn btn-primary' onClick={bookRoom}>Pay Now</button>
               </div>
 
 
