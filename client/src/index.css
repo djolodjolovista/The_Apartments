@@ -59,10 +59,13 @@ h1 {
   border-radius: 5px !important;
 }
 
-input {/*register screen*/
+input, select, .ant-picker {/*register screen*/ /*select-za homescreen*/
   box-shadow: none !important;
   margin-top: 10px;
   border: 1px solid black !important;
+  width: 100% !important;
+  border-radius: 3px !important;
+  height: 35px !important;
 }
 
 h2 { /*naslov u register screen*/
@@ -74,4 +77,8 @@ h2 { /*naslov u register screen*/
 
 .dropdown-toggle {
   border: 0px solid black !important;
+}
+
+.ant-picker-input input{
+  border: none !important;
 }

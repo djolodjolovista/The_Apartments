@@ -20,7 +20,8 @@ function Homescreen() {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
   const [duplicaterooms, setduplicaterooms] = useState([]); //stvaramo drugi niz soba jer cemo taj filtrirati u zavisnosti da li je neka soba bukirana
-
+  const [searchkey, setserachkey] = useState('') //za search room filter
+  const [type, settype] = useState('all') //za type filter inicijalno postavljen na all
   useEffect(() => {
     async function fetchData() {
       try {
@@ -85,23 +86,53 @@ function Homescreen() {
     }
   }
 
+  function filterBySearch() {
+    const temprooms = duplicaterooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))//moramo sve prebaciti u lower case
+    setrooms(temprooms)
+  }
+
+  function filterByType(e) {
+    settype(e) //da prikaze u polju da li je ukljucen filter delux,non-delux ili all
+    if(e!=='all')
+    {
+      const temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
+    setrooms(temprooms)
+    }
+    else{
+      setrooms(duplicaterooms)
+    }
+  }
+
                                /**className od div-ova je iz bootstrap */
-  /**Prvo provjeravamo Loading pa rooms pa ako nije nista od toga true onda tek error da izbaci ! */
+  /**Prvo provjeravamo Loading pa rooms pa ako nije nista od toga true onda tek error da izbaci !(kad ubacimo filter search brisemo error) */
   /**.map()-koristimo da kreiramo listu od JSX elemenata */
   return (
     <div className="container">
-      <div className="row mt-5">
+      <div className="row mt-5 bs">
         <div className="col-md-3">
 
         <RangePicker format="DD-MM-YYYY" onChange={filterByDate} />
 
+        </div>
+        <div className="col-md-5">
+          <input type="text" className="form-control" placeholder="search rooms" 
+          value={searchkey} onChange={(e)=> {setserachkey(e.target.value)}} onKeyUp={filterBySearch}/>
+
+        </div>
+
+        <div className="col-md-3">
+        <select className="form-control" value={type} onChange={(e)=>{filterByType(e.target.value)}}>
+          <option value="all">All</option>
+          <option value="delux" >Delux</option>
+          <option value="non-delux">Non-Delux</option>
+        </select>
         </div>
 
       </div>
       <div className="row justify-content-center mt-5">  
         {loading ? (
           <Loader />
-        ) : rooms.length>1 ? (
+        ) : (
           rooms.map((room) => {
             return (
                 <div className="col-md-9 mt-2">
@@ -110,9 +141,7 @@ function Homescreen() {
                 </div>
             );
           })
-        ) : (
-          <Error />
-        )}
+        ) }
       </div>
     </div>
   );
