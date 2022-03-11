@@ -3,6 +3,8 @@ import { Tabs } from "antd";
 import axios from 'axios';
 import Loader from "../components/Loader"; /**importovali smo komponentu Loader da bi je mogli koristiti */
 import Error from "../components/Error";
+import Swal from "sweetalert2";
+import { Tag, Divider } from 'antd';
 
 const { TabPane } = Tabs;
 
@@ -72,6 +74,24 @@ export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti d
         fetchData();
       
     }, [])
+
+    async function cancelBooking(bookingid, roomid) {
+        try {
+            setloading(true)
+            const result = (await axios.post('/api/bookings/cancelbooking',{bookingid, roomid})).data
+            console.log(result)
+            setloading(false)
+            Swal.fire('Congrats', 'Your booking has been cancelled','success').then(result=>{
+                window.location.reload()
+            })
+        } catch (error) {
+            setloading(false)
+            console.log(error)
+            Swal.fire('Oops', 'Something went wrong', 'error')
+        }
+
+    }
+
     //booking.room,booking._id ... pratis u booking.js
     return (
     <div>
@@ -87,11 +107,13 @@ export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti d
                         <p><b>CheckIn:</b> {booking.fromdate}</p>
                         <p><b>Check Out:</b> {booking.todate}</p>
                         <p><b>Amount:</b> {booking.totalamount}</p>
-                        <p><b>Status:</b> {booking.status == 'booked' ? 'Confirmed' : 'Canceled'}</p>
+                        <p><b>Status:</b> {booking.status=='cancelled' ? (<Tag color="red">CANCELLED</Tag>) : (<Tag color="green">CONFIRMED</Tag>)}</p>
 
+                       {booking.status !== 'cancelled' && ( 
                         <div className="text-right">
-                            <button className="btn btn primary">CANCEL BOOKING</button>
+                            <button className="btn btn primary" onClick={()=>{cancelBooking(booking._id, booking.roomid)}}>CANCEL BOOKING</button>
                         </div>
+                        )}
                     </div>)
                 }))}
             </div>

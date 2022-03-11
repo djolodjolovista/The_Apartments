@@ -9,6 +9,7 @@ const stripe = require("stripe")(
 );
 //ovo iznad pored "stripe" je secret key
 const { v4: uuidv4 } = require("uuid"); //uuid cemo koristiti za generisanje transaction id
+const roomModel = require("../models/room");
 router.post("/bookroom", async (req, res) => {
   //bookroom to je endpoint
 
@@ -90,6 +91,29 @@ router.post('/getbookingsbyuserid', async(req, res) => {
   try {
     const bookings = await Booking.find({userid : userid})//userid bude jednak userid
     res.send(bookings)
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+
+});
+
+router.post('/cancelbooking', async (req, res) => {
+
+  const {bookingid, roomid} = req.body; //destructuring
+
+  try {
+    const bookingitem = await Booking.findOne({_id: bookingid})
+    bookingitem.status = 'cancelled'
+    await bookingitem.save()//da sacuvamo u bazi promjenu booking.status
+    const room = await Room.findOne({_id: roomid})
+    
+    const bookings = room.currentbookings //stavljamo niz currentbookings iz rooms u bookings da mozemo filtrirati taj niz 
+    const temp = bookings.filter(booking=>booking.bookingid.toString()!==bookingid)  //booking.bookingid- iz baze rooms pa currentbookings
+                                                                          //desno bookingid je onaj sto smo dobili sa frontend-a
+    room.currentbookings = temp //sad ce u room.currentbookings biti uklonjena odg rezervacija
+    await room.save()//da sacuvamo u bazi promjene 
+    
+    res.send('Your booking cancelled successfully')//ovo saljemo kao response tj.odgovor
   } catch (error) {
     return res.status(400).json({ error });
   }

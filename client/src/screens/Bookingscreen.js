@@ -22,6 +22,10 @@ function Bookingscreen({ match }) {
   const [totalamount, settotalamount] = useState();
 
   async function fetchData() {
+    if(!localStorage.getItem('currentUser'))//ako user nije ulogovan da ga prbaci na logovanje jer i u booking screen-u se prikazuje ulogovani korisnik
+    {
+      window.location.reload='/login'
+    }
     try {
       setloading(true); /**API request je pokrenut */
       const data = (
