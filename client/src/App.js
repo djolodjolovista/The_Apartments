@@ -6,6 +6,7 @@ import Homescreen from './screens/Homescreen';
 import Bookingscreen from './screens/Bookingscreen';
 import Registerscreen from './screens/Registerscreen';
 import Loginscreen from './screens/Loginscreen';
+import Profilescreen from './screens/Profilescreen';
 /**Route- Рута је условно приказана компонента заснована на подударању путање до УРЛ-а. */
 ///:fromdate/:todate saljemo ih iz homescreen u bookingscreen kao props zato cemo i u Room morati navesti ta dva
 function App() {
@@ -18,6 +19,7 @@ function App() {
      <Route path='/book/:roomid/:fromdate/:todate' exact component={Bookingscreen} /> 
      <Route path='/register' exact component={Registerscreen} />
      <Route path='/login' exact component={Loginscreen} />
+     <Route path='/profile' exact component={Profilescreen} />
      </BrowserRouter>
     </div>
   );

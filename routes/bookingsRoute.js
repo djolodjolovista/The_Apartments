@@ -82,5 +82,19 @@ router.post("/bookroom", async (req, res) => {
   }
 });
 
+router.post('/getbookingsbyuserid', async(req, res) => {
+
+  const userid = req.body.userid
+
+
+  try {
+    const bookings = await Booking.find({userid : userid})//userid bude jednak userid
+    res.send(bookings)
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+
+});
+
 module.exports = router;
 //sad treba booking rutu upisati u server.js

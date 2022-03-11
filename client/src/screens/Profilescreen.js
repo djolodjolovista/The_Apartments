@@ -1,0 +1,104 @@
+import React,{useState, useEffect} from "react";
+import { Tabs } from "antd";
+import axios from 'axios';
+import Loader from "../components/Loader"; /**importovali smo komponentu Loader da bi je mogli koristiti */
+import Error from "../components/Error";
+
+const { TabPane } = Tabs;
+
+function Profilescreen() {
+
+    const user = JSON.parse(localStorage.getItem('currentUser')) //trenutni korisnik
+
+    useEffect(() => {
+      
+        if(!user){
+            window.location.href='/login'
+        }
+    
+     
+    }, [])
+    
+
+  return (
+    <div className="ml-3 mt-3">
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Profile" key="1">
+          <p>My profile</p>
+          <br />
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+          <p>IsAdmin: {user.isAdmin ? 'YES' : 'NO'}</p>
+        </TabPane>
+        <TabPane tab="Bookings" key="2">
+          <MyBookings />
+        </TabPane>
+        
+      </Tabs>
+    </div>
+  );
+}
+
+export default Profilescreen;
+
+
+
+export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti dosta vise logike nego za my profile
+    
+    const user = JSON.parse(localStorage.getItem('currentUser')) //trenutni korisnik
+    const [bookings, setbookings] = useState([])
+    const [loading, setloading] =
+    useState(
+      false
+    ); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
+  const [error, seterror] = useState();
+
+    async function fetchData(){
+
+        try {
+            setloading(true)
+            const data = (await axios.post('/api/bookings/getbookingsbyuserid',{userid: user._id})).data //endpoint
+        console.log(data)
+        setbookings(data)
+        setloading(false)
+        } catch (error) {
+            console.log(error)
+            setloading(false)
+            seterror(error)
+        }
+    }
+    useEffect(()=>{
+      
+        fetchData();
+      
+    }, [])
+    //booking.room,booking._id ... pratis u booking.js
+    return (
+    <div>
+        {loading && (<Loader />) }
+        <div className="row">
+        
+            <div className="col-md-6">
+            
+                {bookings && (bookings.map(booking =>{
+                    return (<div className="bs">
+                        <h1>{booking.room}</h1>
+                        <p><b>BookingId:</b> {booking._id}</p>
+                        <p><b>CheckIn:</b> {booking.fromdate}</p>
+                        <p><b>Check Out:</b> {booking.todate}</p>
+                        <p><b>Amount:</b> {booking.totalamount}</p>
+                        <p><b>Status:</b> {booking.status == 'booked' ? 'Confirmed' : 'Canceled'}</p>
+
+                        <div className="text-right">
+                            <button className="btn btn primary">CANCEL BOOKING</button>
+                        </div>
+                    </div>)
+                }))}
+            </div>
+
+        </div>
+    </div>
+  )
+}
+
+
