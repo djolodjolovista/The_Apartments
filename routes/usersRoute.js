@@ -44,4 +44,14 @@ router.post('/login', async(req, res) => {
 
 });
 
+router.get('/getallusers', async(req, res) => {
+    try {
+        const result = await User.find();
+        res.send(result)
+    } catch (error) {
+        return res.status(400).json({ error });
+    }
+
+});
+
 module.exports = router

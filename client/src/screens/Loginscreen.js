@@ -52,8 +52,8 @@ function Loginscreen() {
                 <div className='bs'>
                     <h2>Login</h2>
                    
-                    <input type="text" className='form-control' placeholder='email' value={email} onChange={(e)=>{setemail(e.target.value)}} />
-                    <input type="text" className='form-control' placeholder='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+                    <input type="text" className='form-control mt-3' placeholder='email' value={email} onChange={(e)=>{setemail(e.target.value)}} />
+                    <input type="text" className='form-control mt-3' placeholder='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
                    
 
                     <button className='btn btn-primary mt-3' onClick={Login}>Login</button>
