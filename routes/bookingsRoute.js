@@ -120,5 +120,15 @@ router.post('/cancelbooking', async (req, res) => {
 
 });
 
+router.get('/getallbookings', async(req, res) => {
+
+  try {
+    const bookings = await Booking.find()//no condition-moramo da posaljemo sve
+    res.send(bookings)
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+});
+
 module.exports = router;
 //sad treba booking rutu upisati u server.js
