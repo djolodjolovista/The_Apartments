@@ -5,6 +5,13 @@ import Error from "../components/Error";
 import moment from "moment";
 import StripeCheckout from "react-stripe-checkout";
 import Swal from "sweetalert2";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; //aos google pa github za css
+
+// ..
+AOS.init({
+    duration: 1000 //trajanje animacije u ms
+});
 
 function Bookingscreen({ match }) {
   const [loading, setloading] =
@@ -77,7 +84,7 @@ function Bookingscreen({ match }) {
 
   /**Prvo provjeravamo loading pa onda room pa ako nista od toga nije true onda tek nek izbaci error ! */
   return (
-    <div className="m-5">
+    <div className="m-5" data-aos='flip-left'>
       {loading ? (
         <Loader />
       ) : room ? (

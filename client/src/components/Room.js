@@ -1,6 +1,13 @@
 import React, {useState} from "react";
 import {Modal, Button, Carousel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; //aos google pa github za css
+
+// ..
+AOS.init({
+    duration: 1000 //trajanje animacije u ms
+});
 
 
 function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i todate) */
@@ -10,7 +17,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
   const handleClose = () => setShow(false); /**da zatvorimo popup model (View Details) */
   const handleShow = () => setShow(true); /**koristimo da prikaze model popup (button View Details) */
   return (
-    <div className="row bs">
+    <div className="row bs" data-aos='fade-up'>
       <div className="col-md-4">
         <img src={room.imageurls[0]} alt="" className="smallimg" />
       </div>

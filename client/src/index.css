@@ -41,7 +41,7 @@ h1 {
 }
 
 .btn {
-  background-color: black;
+  background-color: black !important;
   color: white !important;
   box-shadow: none !important;
   
@@ -69,9 +69,9 @@ input, select, .ant-picker {/*register screen*/ /*select-za homescreen*/
 }
 
 h2 { /*naslov u register screen*/
-  font-size: 30px !important;
+  font-size: 30px;
   padding: 10px;
-  font-weight: bold !important;
+  font-weight: bold;
   text-align: center;
 }
 
@@ -94,4 +94,20 @@ input[type=text]{
   width: 100% !important;
   border-radius: 3px !important;
   height: 35px !important;
+}
+
+.landing{
+  background-color: black !important;/*kad stavimo important ne moze se override*/
+  height: 87.5vh;
+  
+}
+
+.landingbtn{
+  background-color: white !important;
+  color: black !important;
+  margin-top: 20px;
+}
+
+.landing .col-md-12{
+  border-right: 5px solid white !important;
 }
