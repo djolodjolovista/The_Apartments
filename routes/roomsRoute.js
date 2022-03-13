@@ -35,4 +35,17 @@ router.post('/getroombyid', async(req, res) => {
 
 });
 
+router.post('/addroom', async(req, res) => { //dodavanje nove sobe
+    
+    try {
+        const newroom = new Room(req.body)
+        await newroom.save() //nova soba sacuvana u bazi
+
+        res.send('New Room Added Successfully')
+    } catch (error) {
+        return res.status(400).json({ error });
+    }
+    
+});
+
 module.exports = router; /**Moramo ga exportovati jer cemo ga koristiti u server.js koji je entry-point nase node aplikacije */

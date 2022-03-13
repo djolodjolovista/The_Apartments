@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import axios from "axios";
 import Loader from "../components/Loader"; /**importovali smo komponentu Loader da bi je mogli koristiti */
 import Error from "../components/Error";
+import Swal from "sweetalert2";
 
 const { TabPane } = Tabs;
 
@@ -245,6 +246,9 @@ return(
 
 export function AddRoom() {
 
+  const [loading, setloading] = useState(false)
+  const [error, seterror] = useState()
+
   const [name, setname] = useState('')
   const [rentperday, setrentperday] = useState()
   const [maxcount, setmaxcount] = useState()
@@ -255,7 +259,7 @@ export function AddRoom() {
   const [imageurl2, setimageurl2] = useState()
   const [imageurl3, setimageurl3] = useState()
 
-  function addRoom(){
+  async function addRoom(){//dodavanje nove sobe
     const newroom = {
       name,
       rentperday,
@@ -265,12 +269,25 @@ export function AddRoom() {
       type,
       imageurls: [imageurl1,imageurl2,imageurl3]
     }
-    console.log(newroom)
+    try {
+      setloading(true)
+     const result = (await axios.post('/api/rooms/addroom', newroom)).data
+     console.log(result)
+     setloading(false)
+     Swal.fire('Congrats','Your New Room Added Successfully','success').then(result=>
+      window.location.href="/home")
+    } catch (error) {
+      console.log(error)
+      setloading(false)
+      Swal.fire('Oops','Something went wrong','error')
+    }
   }
 
   return (
     <div className='row'>
+      
       <div className='col-md-5'>
+      {loading && (<Loader />)}
         <input type='text' className='form-control' placeholder='room name'
         value={name} onChange={(e)=>{setname(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='rent per day'
