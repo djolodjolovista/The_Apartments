@@ -31,7 +31,7 @@ function Bookingscreen({ match }) {
   async function fetchData() {
     if(!localStorage.getItem('currentUser'))//ako user nije ulogovan da ga prbaci na logovanje jer i u booking screen-u se prikazuje ulogovani korisnik
     {
-      window.location.reload='/login'
+      window.location.herf='/login'
     }
     try {
       setloading(true); /**API request je pokrenut */
@@ -74,7 +74,7 @@ function Bookingscreen({ match }) {
       const result = await axios.post("/api/bookings/bookroom", bookingDetails); //prvo napravimo bookingsRoute na backendu pa onda pisemo ovdje URL
       setloading(false)                                                             //stavili smo ovaj url kao na backendu tj slican
       Swal.fire('Congratulations','Your Room Booked Successfully','success').then(result =>{//success-parametar je tip popup-a                                                          //bookingDetails ce biti proslijeđen na backend
-      window.location.href='/bookings' //prebaci nas na stranicu bookings od korisnika
+      window.location.href='/profile' //prebaci nas na stranicu bookings od korisnika
       })
       } catch (error) {                                                             
       setloading(false)
