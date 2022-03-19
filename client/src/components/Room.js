@@ -10,19 +10,23 @@ AOS.init({
 });
 
 
+
+
 function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i todate) */
 //moramo kad kliknemo booknow da posaljemo ove props-e u url u bookingscreen
     const [show, setShow] = useState(false); /**show=true prikazuje model popup, a false sakriva model popup (View Details) */
 
   const handleClose = () => setShow(false); /**da zatvorimo popup model (View Details) */
   const handleShow = () => setShow(true); /**koristimo da prikaze model popup (button View Details) */
+  const test = JSON.parse(localStorage.getItem('currentUser'))
   return (
     <div className="row bs" data-aos='fade-up'>
       <div className="col-md-4">
         <img src={room.imageurls[0]} alt="" className="smallimg" />
       </div>
       <div className="col-md-7">
-        <h1>{room.name}</h1>
+        <h1 style={{textAlign: 'center'}}>{room.name}</h1>
+        <h3>{room.adress}</h3>
         <b>
           <p>Max Count: {room.maxcount}</p>
           <p>Phone Number: {room.phonenumber}</p>
@@ -31,9 +35,9 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
 
         <div style={{ float: "right" }}>
 
-          {(fromdate && todate) && (
-           <Link to={`/book/${room._id}/${fromdate}/${todate}`}>
-           <button className="btn btn-primary m-2">Book Now</button>
+          {(fromdate && todate && (test!==null)) && (
+           <Link to={`/book/${room._id}/${fromdate}/${todate}`} >
+           <button className="btn btn-primary m-2" >Book Now</button>
          </Link>
         
   )}
@@ -52,17 +56,15 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
         <Carousel prevLabel='' nextLabel=''>
 
   
-                {room.imageurls.map(url=>{
+                {room.imageurls.map((url,index)=>{
                     return (
-                        <Carousel.Item>
-    <img
+                        <Carousel.Item key={index}>
+    <img key={index}
       className="d-block w-100 bigimg"
       src={url}
       alt=""
     />
-
-   
-  </Carousel.Item>
+    </Carousel.Item>
                     );
                 })}
   

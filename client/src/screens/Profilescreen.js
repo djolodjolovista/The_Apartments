@@ -25,16 +25,17 @@ function Profilescreen() {
   return (
     <div className="ml-3 mt-3">
       <Tabs defaultActiveKey="1">
-        <TabPane tab="Profile" key="1">
-          <p>My profile</p>
-          <br />
-          <p>Name: {user.name}</p>
-          <p>Email: {user.email}</p>
-          <p>IsAdmin: {user.isAdmin ? 'YES' : 'NO'}</p>
-        </TabPane>
-        <TabPane tab="Bookings" key="2">
+      <TabPane  tab="Bookings" key="1">
           <MyBookings />
         </TabPane>
+        <TabPane tab="Profile" key="2">
+          <p>My profile</p>
+          <br />
+          <p><b>Name:</b> {user.name}</p>
+          <p><b>Email:</b> {user.email}</p>
+          <p><b>IsAdmin:</b> {user.isAdmin ? 'YES' : 'NO'}</p>
+        </TabPane>
+        
         
       </Tabs>
     </div>

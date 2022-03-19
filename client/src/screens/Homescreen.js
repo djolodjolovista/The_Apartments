@@ -32,6 +32,7 @@ function Homescreen() {
         setduplicaterooms(data);
         setloading(false); /**API request je zavrsen */
         document.getElementById("select-list").setAttribute("disabled", "disabled")//filter type disabled dok se ne odabere datum
+        document.getElementById("search-filter").setAttribute("disabled", "disabled")//search filter disabled dok se datum ne odabere
       } catch (error) {
         seterror(true);
         console.log(error);
@@ -45,9 +46,12 @@ function Homescreen() {
   }, []);
 
   function filterByDate(dates) { //dates je niz koji ima dva datuma 'start date' i 'to date'
-
+    
+   
     document.getElementById("select-list").removeAttribute("disabled")//kad odaberemo datum omoguci filter type
+    document.getElementById("search-filter").removeAttribute("disabled")//kad odaberemo datum omoguci search filter
     filterByType('all') //kad promijenimo datum da vraca filter type na 'all'
+    setserachkey('')//kad promijeni datum brise search key
     setfromdate(moment(dates[0]).format('DD-MM-YYYY')); //podesen format za 'start date' on je na indeksu 0
     settodate(moment(dates[1]).format('DD-MM-YYYY')); //za 'to date'
     //moramo sad info o datumu proslijediti room komponenti, a to cemo prikazati u bookingscreen
@@ -92,11 +96,13 @@ function Homescreen() {
       temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
       setrooms(temprooms);//prikazace samo slobodne sobe
     }
+  
   }
+ 
   
 
   function filterBySearch() {
-    const temprooms = duplicaterooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))//moramo sve prebaciti u lower case
+    const temprooms = rooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))//moramo sve prebaciti u lower case
     setrooms(temprooms)
   }
 
@@ -104,10 +110,12 @@ function Homescreen() {
     settype(e) //da prikaze u polju da li je ukljucen filter delux,non-delux ili all
     if(e!=='all')
     {
-      const temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
-    setrooms(temprooms)
+      var temprooms = rooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
+      temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
+      setrooms(temprooms)
     }
     else{
+      
       setrooms(duplicaterooms)
     }
   }
@@ -120,23 +128,24 @@ function Homescreen() {
       <div className="row mt-5 bs">
         <div className="col-md-3">
 
-        <RangePicker format="DD-MM-YYYY" onChange={filterByDate} />
+        <RangePicker allowClear={false} format="DD-MM-YYYY" onChange={filterByDate} />
 
         </div>
         <div className="col-md-5">
-          <input type="text" className="form-control" placeholder="search rooms" 
+          <input type="text" id="search-filter" className="form-control" placeholder="search rooms" 
           value={searchkey} onChange={(e)=> {setserachkey(e.target.value)}} onKeyUp={filterBySearch}/>
 
         </div>
 
         <div className="col-md-3">
-          {}
+          
         <select className="form-control" id="select-list" value={type} onChange={(e)=>{filterByType(e.target.value)}}>
           <option value="all">All</option>
           <option value="delux">Delux</option>
           <option value="non-delux">Non-Delux</option>
         </select>
         </div>
+        <div><button className="btn btn-primary" onClick={()=>{window.location.reload()}}>Clear</button></div>
 
       </div>
       <div className="row justify-content-center mt-5">  
@@ -145,7 +154,7 @@ function Homescreen() {
         ) : (
           rooms.map((room) => {
             return (
-                <div className="col-md-9 mt-2">
+                <div key={room._id} className="col-md-9 mt-2">
                     <Room room={room} fromdate={fromdate} todate={todate} />
 
                 </div>

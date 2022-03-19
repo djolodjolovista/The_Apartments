@@ -250,6 +250,7 @@ export function AddRoom() {
   const [error, seterror] = useState()
 
   const [name, setname] = useState('')
+  const [adress, setadress] = useState('')
   const [rentperday, setrentperday] = useState()
   const [maxcount, setmaxcount] = useState()
   const [description, setdescription] = useState()
@@ -262,6 +263,7 @@ export function AddRoom() {
   async function addRoom(){//dodavanje nove sobe
     const newroom = {
       name,
+      adress,
       rentperday,
       maxcount,
       description,
@@ -290,6 +292,8 @@ export function AddRoom() {
       {loading && (<Loader />)}
         <input type='text' className='form-control' placeholder='room name'
         value={name} onChange={(e)=>{setname(e.target.value)}}/>
+        <input type='text' className='form-control' placeholder='room adress'
+        value={adress} onChange={(e)=>{setadress(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='rent per day'
         value={rentperday} onChange={(e)=>{setrentperday(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='max count'

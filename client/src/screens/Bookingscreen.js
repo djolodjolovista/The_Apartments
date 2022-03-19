@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; //aos google pa github za css
 
+
 // ..
 AOS.init({
     duration: 1000 //trajanje animacije u ms
@@ -27,13 +28,18 @@ function Bookingscreen({ match }) {
 
   const totaldays = moment.duration(todate.diff(fromdate, 'days')) + 1; //izracunava ukupan broj dana, diff razlika izmedju todate i fromdate
   const [totalamount, settotalamount] = useState();
-
+ 
   async function fetchData() {
-    if(!localStorage.getItem('currentUser'))//ako user nije ulogovan da ga prbaci na logovanje jer i u booking screen-u se prikazuje ulogovani korisnik
+    const test = JSON.parse(localStorage.getItem('currentUser'))
+    
+    if(test === null)//ako user nije ulogovan da ga prebaci na logovanje jer i u booking screen-u se prikazuje ulogovani korisnik
     {
-      window.location.herf='/login'
+      
+      window.location.href='/login'
     }
+   
     try {
+    
       setloading(true); /**API request je pokrenut */
       const data = (
         await axios.post("/api/rooms/getroombyid", {

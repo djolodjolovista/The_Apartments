@@ -6,12 +6,16 @@ const roomSchema = mongoose.Schema({
         type: String, 
         required: true
     },
+    adress: {
+        type: String,
+        required: true
+    },
     maxcount: {
         type: Number,
         required: true
     },
     phonenumber: {
-        type: Number,
+        type: String,
         required: true
     },
     rentperday: {
