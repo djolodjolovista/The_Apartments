@@ -20,30 +20,32 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
   const handleShow = () => setShow(true); /**koristimo da prikaze model popup (button View Details) */
   const test = JSON.parse(localStorage.getItem('currentUser'))
   return (
-    <div className="row bs" data-aos='fade-up'>
+    <div className="row bs mr-1 ml-1" data-aos='fade-up'>
       <div className="col-md-4">
         <img src={room.imageurls[0]} alt="" className="smallimg" />
       </div>
       <div className="col-md-7">
-        <h1 style={{textAlign: 'center'}}>{room.name}</h1>
+        <h1 style={{textAlign: 'cecdnter', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} >{room.name}</h1>
+        
         <h3>{room.adress}</h3>
+        
         <b>
-          <p>Max Count: {room.maxcount}</p>
-          <p>Phone Number: {room.phonenumber}</p>
-          <p>Type: {room.type}</p>
+          <p>Kapacitet: {room.maxcount}</p>
+          <p>Broj tel: {room.phonenumber}</p>
+          <p>Tip: {room.type}</p>
         </b>
 
         <div style={{ float: "right" }}>
 
           {(fromdate && todate && (test!==null)) && (
            <Link to={`/book/${room._id}/${fromdate}/${todate}`} >
-           <button className="btn btn-primary m-2" >Book Now</button>
+           <button className="btn btn-primary m-2" >Rezervisi</button>
          </Link>
         
   )}
 
          
-          <button className="btn btn-primary" onClick={handleShow}>View Details</button>
+          <button className="btn btn-primary" onClick={handleShow}>Pregled detalja</button>
         </div>
       </div>
       
@@ -53,7 +55,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
           <Modal.Title>{room.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Carousel prevLabel='' nextLabel=''>
+        <Carousel indicators={false} prevLabel='' nextLabel=''>
 
   
                 {room.imageurls.map((url,index)=>{
@@ -72,9 +74,16 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
         <p>{room.description}</p>
         </Modal.Body>
         <Modal.Footer>
+        <div class="modal-content">
+     
+        <h3 className="text-center mt-1" style={{fontSize: "20px"}}><b>Cijena po danu :</b> {room.rentperday}</h3>
+        
+        </div>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Zatvori
           </Button>
+          
+          
           
         </Modal.Footer>
       </Modal>

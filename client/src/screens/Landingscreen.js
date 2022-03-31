@@ -15,7 +15,7 @@ function Landingscreen() { //'col-md-12' znaci da smo uzeli komplet duzinu reda 
             <h2 data-aos='zoom-in-down' style={{color: 'white', fontSize: '120px'}}>The Apartments</h2>
             <h1 data-aos='zoom-out-down' style={{color: 'white'}}>There is only one boss. The Guest</h1>
             <Link to='/home'>
-                <button className='btn landingbtn' style={{color:'black'}}>Get Started</button>
+                <button className='btn landingbtn' style={{color:'black'}}>Pregled</button>
             </Link>
         </div>
     </div>

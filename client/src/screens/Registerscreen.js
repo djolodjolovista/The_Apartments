@@ -43,7 +43,7 @@ function Registerscreen() {
             }
         }
         else {
-            alert("Password do not match!");
+            alert("Šifre se na poklapaju!");
         }
     }
 
@@ -55,15 +55,15 @@ function Registerscreen() {
         
         <div className="row justify-content-center mt-5">
             <div className='col-md-5 mt-5'>
-            {success && <Success message="Registration success" />/**message je props koji saljemo */ }
+            {success && <Success message="Registracija uspješna" />/**message je props koji saljemo */ }
                 <div className='bs'>
-                    <h2>Register</h2>
-                    <input type="text" className='form-control' placeholder='name' value={name} onChange={(e)=>{setname(e.target.value)}} />
+                    <h2>Registracija</h2>
+                    <input type="text" className='form-control' placeholder='ime' value={name} onChange={(e)=>{setname(e.target.value)}} />
                     <input type="text" className='form-control' placeholder='email' value={email} onChange={(e)=>{setemail(e.target.value)}} />
-                    <input type="text" className='form-control' placeholder='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
-                    <input type="text" className='form-control' placeholder='confirm password' value={cpassword} onChange={(e)=>{setcpassword(e.target.value)}} />
+                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-2' placeholder='šifra' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-2' placeholder='potvrdi šifru' value={cpassword} onChange={(e)=>{setcpassword(e.target.value)}} />
 
-                    <button className='btn btn-primary mt-3' onClick={register}>Register</button>
+                    <button className='btn btn-primary mt-3' onClick={register}>Registracija</button>
                     
 
                 </div>

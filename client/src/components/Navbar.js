@@ -9,6 +9,8 @@ function Navbar() {
     window.location.href = '/login';//kad uradimo logout da nas vrati na stranicu za login
   }
 
+ 
+
   //<></>-je fragment jer u react-u mozemo da ubacimo samo jedan element pa zato vise el okruzimo fragmentom
   return (
     <div>
@@ -46,12 +48,17 @@ function Navbar() {
                     className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton"
                   >
+                    { user.isAdmin && <a className="dropdown-item" href="/admin">
+                      Admin
+                    </a>}
                     <a className="dropdown-item" href="/profile">
-                      Profile
+                      Profil
                     </a>
+                    
                     <a className="dropdown-item" href="/login" onClick={logout}>
-                      Logout
+                      Odjavi se
                     </a>
+                   
                    
                   </div>
                 </div>
@@ -60,12 +67,12 @@ function Navbar() {
               <>
                 <li className="nav-item active">
                   <a className="nav-link" href="/register">
-                    Register
+                    Registracija
                   </a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="/login">
-                    Login
+                    Prijava
                   </a>
                 </li>
               </>

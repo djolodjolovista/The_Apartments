@@ -22,16 +22,16 @@ function Adminscreen() {
     <div className='mt-3 ml-3 mr-3 bs'>
         <h2 className='text-center' style={{fontSize: '30px'}}><b>Admin Panel</b></h2>
         <Tabs defaultActiveKey="1">
-    <TabPane tab="Bookings" key="1">
+    <TabPane tab="Rezervacije" key="1">
       <Bookings />
     </TabPane>
-    <TabPane tab="Rooms" key="2">
+    <TabPane tab="Sobe" key="2">
       <Rooms />
     </TabPane>
-    <TabPane tab="Add Room" key="3">
+    <TabPane tab="Dodaj sobu" key="3">
       <AddRoom />
     </TabPane>
-    <TabPane tab="Users" key="4">
+    <TabPane tab="Korisnici" key="4">
       <Users />
     </TabPane>
   </Tabs>
@@ -74,17 +74,17 @@ export function Bookings() {
         
     <div className="row">
         
-        <div className='col-md-10'>
-            <h1>Bookings</h1>
+        <div className='col-md-12'>
+            <h1>Rezervacije</h1>
             {loading && (<Loader />)}
             <table className='table table-bordered table-dark'>
                 <thead className='bs'>
                     <tr>
-                        <th>Booking Id</th>
-                        <th>User Id</th>
-                        <th>Room</th>
-                        <th>From</th>
-                        <th>To</th>
+                        <th>ID rezervacije</th>
+                        <th>ID korisnika</th>
+                        <th>Soba</th>
+                        <th>Od</th>
+                        <th>Do</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -97,7 +97,7 @@ export function Bookings() {
                     <td style={{whiteSpace:'nowrap'}}>{booking.room}</td>
                     <td style={{whiteSpace:'nowrap'}}>{booking.fromdate}</td>
                     <td style={{whiteSpace:'nowrap'}}>{booking.todate}</td>
-                    <td>{booking.status}</td>
+                    {booking.status === "booked" ? (<td>Potvrđeno</td>) : (<td>Otkazano</td>)}
                 </tr>
                 )}
                 ))}
@@ -143,18 +143,18 @@ export function Rooms() {
       
   <div className="row">
       
-      <div className='col-md-10'>
-          <h1>Rooms</h1>
+      <div className='col-md-12'>
+          <h1>Sobe</h1>
           {loading && (<Loader />)}
           <table className='table table-bordered table-dark'>
               <thead className='bs'>
                   <tr>
-                      <th>Room Id</th>
-                      <th>Name</th>
-                      <th>Type</th>
-                      <th style={{whiteSpace: 'nowrap'}}>Rent Per Day</th>
-                      <th style={{whiteSpace: 'nowrap'}}>Max Count</th>
-                      <th style={{whiteSpace: 'nowrap'}}>Phone Number</th>
+                      <th>ID sobe</th>
+                      <th>Naziv</th>
+                      <th>Tip</th>
+                      <th style={{whiteSpace: 'nowrap'}}>Cijena po danu</th>
+                      <th style={{whiteSpace: 'nowrap'}}>Kapacitet</th>
+                      <th style={{whiteSpace: 'nowrap'}}>Broj tel</th>
                   </tr>
               </thead>
               <tbody>
@@ -210,14 +210,14 @@ return(
   <div className='row'>
     <div className='col-md-12'>
       {loading && (<Loader />)}
-      <h1>Users</h1>
+      <h1>Korisnici</h1>
       <table className='table table-dark table-bordered'>
         <thead>
           <tr>
-            <th>User Id</th>
-            <th>Name</th>
+            <th>ID korisnika</th>
+            <th>Ime</th>
             <th>Email</th>
-            <th>Is Admin</th>
+            <th>Admin</th>
           </tr>
         </thead>
         <tbody>
@@ -276,12 +276,12 @@ export function AddRoom() {
      const result = (await axios.post('/api/rooms/addroom', newroom)).data
      console.log(result)
      setloading(false)
-     Swal.fire('Congrats','Your New Room Added Successfully','success').then(result=>
+     Swal.fire('Čestitamo','Uspješno ste dodali novu sobu','success').then(result=>
       window.location.href="/home")
     } catch (error) {
       console.log(error)
       setloading(false)
-      Swal.fire('Oops','Something went wrong','error')
+      Swal.fire('Oops','Nešto nije u redu','error')
     }
   }
 
@@ -290,32 +290,32 @@ export function AddRoom() {
       
       <div className='col-md-5'>
       {loading && (<Loader />)}
-        <input type='text' className='form-control' placeholder='room name'
+        <input type='text' className='form-control' placeholder='Naziv sobe i grad'
         value={name} onChange={(e)=>{setname(e.target.value)}}/>
-        <input type='text' className='form-control' placeholder='room adress'
+        <input type='text' className='form-control' placeholder='Adresa sobe'
         value={adress} onChange={(e)=>{setadress(e.target.value)}}/>
-        <input type='text' className='form-control' placeholder='rent per day'
+        <input type='text' className='form-control' placeholder='Cijena po danu'
         value={rentperday} onChange={(e)=>{setrentperday(e.target.value)}}/>
-        <input type='text' className='form-control' placeholder='max count'
+        <input type='text' className='form-control' placeholder='Kapacitet'
         value={maxcount} onChange={(e)=>{setmaxcount(e.target.value)}}/>
-        <input type='text' className='form-control' placeholder='description'
+        <input type='text' className='form-control' placeholder='Opis'
         value={description} onChange={(e)=>{setdescription(e.target.value)}}/>
-        <input type='text' className='form-control' placeholder='phone number'
+        <input type='text' className='form-control' placeholder='Broj tel'
         value={phonenumber} onChange={(e)=>{setphonenumber(e.target.value)}}/>
 
       </div>
       <div className='col-md-5'>
-      <input type='text' className='form-control' placeholder='type'
+      <input type='text' className='form-control' placeholder='Tip'
       value={type} onChange={(e)=>{settype(e.target.value)}}/>
-      <input type='text' className='form-control' placeholder='Image URL 1'
+      <input type='text' className='form-control' placeholder='Slika 1 URL'
       value={imageurl1} onChange={(e)=>{setimageurl1(e.target.value)}}/>
-      <input type='text' className='form-control' placeholder='Image URL 2'
+      <input type='text' className='form-control' placeholder='Slika 2 URL'
       value={imageurl2} onChange={(e)=>{setimageurl2(e.target.value)}}/>
-      <input type='text' className='form-control' placeholder='Image URL 3'
+      <input type='text' className='form-control' placeholder='Slika 3 URL'
       value={imageurl3} onChange={(e)=>{setimageurl3(e.target.value)}}/>
 
       <div className='text-right'>
-        <button className='btn btn-primary mt-2' onClick={addRoom}>Add Room</button>
+        <button className='btn btn-primary mt-2' onClick={addRoom}>Dodaj sobu</button>
 
       </div>
 

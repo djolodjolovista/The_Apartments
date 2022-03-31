@@ -79,12 +79,12 @@ function Bookingscreen({ match }) {
       setloading(true)
       const result = await axios.post("/api/bookings/bookroom", bookingDetails); //prvo napravimo bookingsRoute na backendu pa onda pisemo ovdje URL
       setloading(false)                                                             //stavili smo ovaj url kao na backendu tj slican
-      Swal.fire('Congratulations','Your Room Booked Successfully','success').then(result =>{//success-parametar je tip popup-a                                                          //bookingDetails ce biti proslijeđen na backend
+      Swal.fire('Čestitamo','Uspješna rezervacija','success').then(result =>{//success-parametar je tip popup-a                                                          //bookingDetails ce biti proslijeđen na backend
       window.location.href='/profile' //prebaci nas na stranicu bookings od korisnika
       })
       } catch (error) {                                                             
       setloading(false)
-      Swal.fire('Ops','Something went wrong', 'error')
+      Swal.fire('Ops','Nešto nije u redu', 'error')
     }
   }
 
@@ -107,24 +107,24 @@ function Bookingscreen({ match }) {
 
             <div className="col-md-6">
               <div style={{ textAlign: "right" }}>
-                <h1>Booking Details</h1>
+                <h1>Detalji rezervacije</h1>
                 <hr />
 
                 <b>
-                  <p>Name : {currentUser.name} </p>
-                  <p>From Date : {match.params.fromdate} </p>
-                  <p>To Date : {match.params.todate} </p>
-                  <p>Max Count : {room.maxcount}</p>
+                  <p>Ime : {currentUser.name} </p>
+                  <p>Od : {match.params.fromdate} </p>
+                  <p>Do : {match.params.todate} </p>
+                  <p>Kapacitet : {room.maxcount}</p>
                 </b>
               </div>
 
               <div style={{ textAlign: "right" }}>
                 <b>
-                  <h1>Amount</h1>
+                  <h1>Iznos</h1>
                   <hr />
-                  <p>Total days : {totaldays} </p>
-                  <p>Rent per day : {room.rentperday}</p>
-                  <p>Total Amount : {totalamount} </p>
+                  <p>Ukupno dana : {totaldays} </p>
+                  <p>Cijena po danu : {room.rentperday}</p>
+                  <p>Ukupan iznos : {totalamount} </p>
                 </b>
               </div>
 
@@ -132,10 +132,13 @@ function Bookingscreen({ match }) {
                 <StripeCheckout
                   amount={totalamount * 100}
                   currency="EUR"
+                  name="Apartmani"
+                  description="Naplata"
+                  panelLabel="Plati"
                   token={onToken}
                   stripeKey="pk_test_51KbXOeB42lm3IJrhusf5fxHnQruPSrVad3tjYExgSGYslH81eDScnDchhIY2udy6i2k3E8gEzwl5nVGyNzdqKO4h00eedwAxoH"
                 >
-                  <button className="btn btn-primary">Pay Now</button>
+                  <button className="btn btn-primary">Plati</button>
                 </StripeCheckout>
               </div>
             </div>

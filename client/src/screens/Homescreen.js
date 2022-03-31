@@ -26,6 +26,7 @@ function Homescreen() {
     async function fetchData() {
       try {
         setloading(true); /**API request je pokrenut */
+        
         const data = (await axios.get("/api/rooms/getallrooms")).data;
 
         setrooms(data);
@@ -47,7 +48,7 @@ function Homescreen() {
 
   function filterByDate(dates) { //dates je niz koji ima dva datuma 'start date' i 'to date'
     
-   
+  
     document.getElementById("select-list").removeAttribute("disabled")//kad odaberemo datum omoguci filter type
     document.getElementById("search-filter").removeAttribute("disabled")//kad odaberemo datum omoguci search filter
     filterByType('all') //kad promijenimo datum da vraca filter type na 'all'
@@ -95,6 +96,7 @@ function Homescreen() {
       
       temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
       setrooms(temprooms);//prikazace samo slobodne sobe
+      setduplicaterooms(temprooms);
     }
   
   }
@@ -102,22 +104,38 @@ function Homescreen() {
   
 
   function filterBySearch() {
+   
     const temprooms = rooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))//moramo sve prebaciti u lower case
     setrooms(temprooms)
   }
 
   function filterByType(e) {
     settype(e) //da prikaze u polju da li je ukljucen filter delux,non-delux ili all
-    if(e!=='all')
+    var temprooms = []
+    if(e==='delux')
     {
-      var temprooms = rooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
+       temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
       temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
       setrooms(temprooms)
     }
-    else{
-      
-      setrooms(duplicaterooms)
+    else if(e==='non-delux')
+    {
+       temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
+      temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
+      setrooms(temprooms)
     }
+    else if(e==='all'){
+      console.log(duplicaterooms)
+      temprooms = duplicaterooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
+      setrooms(temprooms)
+      
+    }
+  }
+  //f-ja za blokiranje backspace-a i delete-a
+  const preventBackspace = (event) => {
+    if(event.keyCode === 8 || event.keyCode === 46) {
+      event.preventDefault();
+  }
   }
 
                                /**className od div-ova je iz bootstrap */
@@ -126,35 +144,38 @@ function Homescreen() {
   return (
     <div className="container">
       <div className="row mt-5 bs">
-        <div className="col-md-3">
+        <div className="col-md-3 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
 
         <RangePicker allowClear={false} format="DD-MM-YYYY" onChange={filterByDate} />
 
         </div>
-        <div className="col-md-5">
-          <input type="text" id="search-filter" className="form-control" placeholder="search rooms" 
-          value={searchkey} onChange={(e)=> {setserachkey(e.target.value)}} onKeyUp={filterBySearch}/>
+        <div className="col-md-4 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
+          <input type="text" id="search-filter" className="form-control mt-0" placeholder="pretraga" 
+          value={searchkey} onChange={(e)=> {setserachkey(e.target.value)}} onKeyUp={filterBySearch} onKeyDown={preventBackspace}/>
 
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-3 mt-1 mb-1"
+        style={{ display: "flex", alignItems: "center" }}>
           
         <select className="form-control" id="select-list" value={type} onChange={(e)=>{filterByType(e.target.value)}}>
-          <option value="all">All</option>
+          <option value="all">Sve</option>
           <option value="delux">Delux</option>
           <option value="non-delux">Non-Delux</option>
         </select>
         </div>
-        <div><button className="btn btn-primary" onClick={()=>{window.location.reload()}}>Clear</button></div>
+        <div className="col-md-2 mt-1 mb-1"
+          style={{ display: "flex", alignItems: "center" }}>
+          <button className="btn btn-primary w-100" onClick={()=>{window.location.reload()}}>Obriši</button></div>
 
       </div>
-      <div className="row justify-content-center mt-5">  
+      <div className="row justify-content-center mt-5 pb-5">  
         {loading ? (
           <Loader />
         ) : (
           rooms.map((room) => {
             return (
-                <div key={room._id} className="col-md-9 mt-2">
+                <div key={room._id} className="col-md-6 p-1 mt-2">
                     <Room room={room} fromdate={fromdate} todate={todate} />
 
                 </div>

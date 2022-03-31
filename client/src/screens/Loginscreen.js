@@ -47,16 +47,16 @@ function Loginscreen() {
         
         <div className="row justify-content-center mt-5">
             <div className='col-md-5 mt-5'>
-            {error && (<Error message='Invalid Credentionals' />)}
+            {error && (<Error message='Pogrešan unos' />)}
 
                 <div className='bs'>
-                    <h2>Login</h2>
+                    <h2>Prijava</h2>
                    
                     <input type="text" className='form-control mt-3' placeholder='email' value={email} onChange={(e)=>{setemail(e.target.value)}} />
-                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-3' placeholder='password' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-3' placeholder='šifra' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
                    
 
-                    <button className='btn btn-primary mt-3' onClick={Login}>Login</button>
+                    <button className='btn btn-primary mt-3' onClick={Login}>Prijava</button>
                     
 
                 </div>

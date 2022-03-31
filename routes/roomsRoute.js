@@ -1,14 +1,10 @@
 /**U fajlu roomsRoute definisemo api endpoints, update room,delete room itd */
 const express = require("express");
 const router = express.Router();
-
 const Room = require('../models/room')
-
-
 router.get('/getallrooms', async (req, res) => {
 
-    try {
-        
+    try {     
         const rooms = await Room.find({}) /*Room je model koji smo kreirali u models*/
     /**Mogu se desiti error-i zato cemo staviti u try catch blok */
     res.send(rooms)
@@ -21,10 +17,6 @@ router.get('/getallrooms', async (req, res) => {
 router.post('/getroombyid', async(req, res) => {
 
     const roomid = req.body.roomid;
-
-   
-
-
     try {
         const room = await Room.findOne({_id : roomid}) /*Room je model koji smo kreirali u models*/
     /**Mogu se desiti error-i zato cemo staviti u try catch blok */
