@@ -6,6 +6,10 @@ const bookingSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    roomcity : {
+        type: String,
+        required: true
+    },
     roomid : {
         type: String,
         required: true

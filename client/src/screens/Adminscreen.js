@@ -83,6 +83,7 @@ export function Bookings() {
                         <th>ID rezervacije</th>
                         <th>ID korisnika</th>
                         <th>Soba</th>
+                        <th>Mjesto</th>
                         <th>Od</th>
                         <th>Do</th>
                         <th>Status</th>
@@ -95,6 +96,7 @@ export function Bookings() {
                     <td>{booking._id}</td>
                     <td>{booking.userid}</td>
                     <td style={{whiteSpace:'nowrap'}}>{booking.room}</td>
+                    <td style={{whiteSpace:'nowrap'}}>{booking.roomcity}</td>
                     <td style={{whiteSpace:'nowrap'}}>{booking.fromdate}</td>
                     <td style={{whiteSpace:'nowrap'}}>{booking.todate}</td>
                     {booking.status === "booked" ? (<td>Potvrđeno</td>) : (<td>Otkazano</td>)}
@@ -151,6 +153,7 @@ export function Rooms() {
                   <tr>
                       <th>ID sobe</th>
                       <th>Naziv</th>
+                      <th>Mjesto</th>
                       <th>Tip</th>
                       <th style={{whiteSpace: 'nowrap'}}>Cijena po danu</th>
                       <th style={{whiteSpace: 'nowrap'}}>Kapacitet</th>
@@ -163,8 +166,9 @@ export function Rooms() {
               <tr>
                   <td>{room._id}</td>
                   <td>{room.name}</td>
+                  <td>{room.city}</td>
                   <td style={{whiteSpace:'nowrap'}}>{room.type}</td>
-                  <td style={{whiteSpace:'nowrap'}}>{room.rentperday}</td>
+                  <td style={{whiteSpace:'nowrap'}}>{room.rentperday} €</td>
                   <td style={{whiteSpace:'nowrap'}}>{room.maxcount}</td>
                   <td>{room.phonenumber}</td>
               </tr>
@@ -251,19 +255,24 @@ export function AddRoom() {
 
   const [name, setname] = useState('')
   const [adress, setadress] = useState('')
+  const [city, setCity] = useState('')
   const [rentperday, setrentperday] = useState()
   const [maxcount, setmaxcount] = useState()
-  const [description, setdescription] = useState()
-  const [phonenumber, setphonenumber] = useState()
-  const [type, settype] = useState()
-  const [imageurl1, setimageurl1] = useState()
-  const [imageurl2, setimageurl2] = useState()
-  const [imageurl3, setimageurl3] = useState()
+  const [description, setdescription] = useState('')
+  const [phonenumber, setphonenumber] = useState('')
+  const [type, settype] = useState('')
+  const [imageurl1, setimageurl1] = useState('')
+  const [imageurl2, setimageurl2] = useState('')
+  const [imageurl3, setimageurl3] = useState('')
 
   async function addRoom(){//dodavanje nove sobe
+    if(name!=='' && adress!=='' && city!=='' && rentperday!==undefined && maxcount!==undefined && description!==''
+    && phonenumber!=='' && type!=='tip' && type!=='' && imageurl1!=='' && imageurl2!=='' && imageurl3!=='')
+    {
     const newroom = {
       name,
       adress,
+      city,
       rentperday,
       maxcount,
       description,
@@ -284,15 +293,22 @@ export function AddRoom() {
       Swal.fire('Oops','Nešto nije u redu','error')
     }
   }
+  else
+  {
+    Swal.fire('Upozorenje', 'Sva polja moraju biti popunjena!','warning')
+  }
+  }
 
   return (
     <div className='row'>
       
       <div className='col-md-5'>
       {loading && (<Loader />)}
-        <input type='text' className='form-control' placeholder='Naziv sobe i grad'
+        <input type='text' className='form-control' placeholder='Naziv smještaja'
         value={name} onChange={(e)=>{setname(e.target.value)}}/>
-        <input type='text' className='form-control' placeholder='Adresa sobe'
+        <input type='text' className='form-control' placeholder='Mjesto'
+        value={city} onChange={(e)=>{setCity(e.target.value)}} />
+        <input type='text' className='form-control' placeholder='Adresa'
         value={adress} onChange={(e)=>{setadress(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='Cijena po danu'
         value={rentperday} onChange={(e)=>{setrentperday(e.target.value)}}/>
@@ -305,8 +321,11 @@ export function AddRoom() {
 
       </div>
       <div className='col-md-5'>
-      <input type='text' className='form-control' placeholder='Tip'
-      value={type} onChange={(e)=>{settype(e.target.value)}}/>
+      <select className='form-control mt-2' value={type} onChange={(e)=>{settype(e.target.value)}}>
+        <option value='tip'>Tip</option>
+        <option value='Delux'>Delux</option>
+        <option value='Non-Delux'>Non-Delux</option>
+      </select>
       <input type='text' className='form-control' placeholder='Slika 1 URL'
       value={imageurl1} onChange={(e)=>{setimageurl1(e.target.value)}}/>
       <input type='text' className='form-control' placeholder='Slika 2 URL'

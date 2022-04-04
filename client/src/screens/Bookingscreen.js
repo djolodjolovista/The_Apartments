@@ -97,7 +97,7 @@ function Bookingscreen({ match }) {
         <div>
           <div className="row justify-content-center mt-5 bs">
             <div className="col-md-6">
-              <h1>{room.name}</h1>
+              <h1>{room.name} {room.city}</h1>
               <img
                 src={room.imageurls[0]}
                 alt=""
@@ -123,8 +123,8 @@ function Bookingscreen({ match }) {
                   <h1>Iznos</h1>
                   <hr />
                   <p>Ukupno dana : {totaldays} </p>
-                  <p>Cijena po danu : {room.rentperday}</p>
-                  <p>Ukupan iznos : {totalamount} </p>
+                  <p>Cijena po danu : {room.rentperday} €</p>
+                  <p>Ukupan iznos : {totalamount} €</p>
                 </b>
               </div>
 

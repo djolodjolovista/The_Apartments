@@ -11,50 +11,67 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 
 function Homescreen() {
-  const [rooms, setrooms] = useState([]);
-  const [loading, setloading] =
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] =
     useState(); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
-  const [error, seterror] = useState();
-
-  //hooks za datume rezervacije
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
-  const [duplicaterooms, setduplicaterooms] = useState([]); //stvaramo drugi niz soba jer cemo taj filtrirati u zavisnosti da li je neka soba bukirana
-  const [searchkey, setserachkey] = useState('') //za search room filter
-  const [type, settype] = useState('all') //za type filter inicijalno postavljen na all
+  const [error, setError] = useState();
+  const [cityroom, setCityroom] = useState([])
   
+  //hooks za datume rezervacije
+  const [fromdate, setFromdate] = useState();
+  const [todate, setTodate] = useState();
+  const [duplicaterooms, setDuplicaterooms] = useState([]); //stvaramo drugi niz soba jer cemo taj filtrirati u zavisnosti da li je neka soba bukirana
+ 
+  const [type, setType] = useState('all') //za type filter inicijalno postavljen na all
+  const [city, setCity] = useState('none')
     async function fetchData() {
       try {
-        setloading(true); /**API request je pokrenut */
+        setLoading(true); /**API request je pokrenut */
         
         const data = (await axios.get("/api/rooms/getallrooms")).data;
-
-        setrooms(data);
-        setduplicaterooms(data);
-        setloading(false); /**API request je zavrsen */
+        
+        setRooms(data);
+        setDuplicaterooms(data);
+      
+    
+        setLoading(false); /**API request je zavrsen */
         document.getElementById("select-list").setAttribute("disabled", "disabled")//filter type disabled dok se ne odabere datum
-        document.getElementById("search-filter").setAttribute("disabled", "disabled")//search filter disabled dok se datum ne odabere
+        document.getElementById("city-filter").setAttribute("disabled", "disabled")//search filter disabled dok se datum ne odabere
+        
+       
       } catch (error) {
-        seterror(true);
+        setError(true);
         console.log(error);
-        setloading(
+        setLoading(
           false
-        ); /**ako se desi error u toku izvrsenja axios.get nece se ivrsiti setrooms i setloading */
+        ); /**ako se desi error u toku izvrsenja axios.get nece se ivrsiti setRooms i setLoading */
       }
+      
     }
     useEffect(() => {
     fetchData();
+   
+    
   }, []);
 
   function filterByDate(dates) { //dates je niz koji ima dva datuma 'start date' i 'to date'
     
-  
+    var temp = []
+    rooms.forEach(element => {
+      if(!temp.includes(element.city))
+      {
+        temp.push(element.city)
+      }
+    })
+    setCityroom(temp);
+    console.log(temp)
+    console.log(cityroom)
     document.getElementById("select-list").removeAttribute("disabled")//kad odaberemo datum omoguci filter type
-    document.getElementById("search-filter").removeAttribute("disabled")//kad odaberemo datum omoguci search filter
+    document.getElementById("city-filter").removeAttribute("disabled")//kad odaberemo datum omoguci search filter
     filterByType('all') //kad promijenimo datum da vraca filter type na 'all'
-    setserachkey('')//kad promijeni datum brise search key
-    setfromdate(moment(dates[0]).format('DD-MM-YYYY')); //podesen format za 'start date' on je na indeksu 0
-    settodate(moment(dates[1]).format('DD-MM-YYYY')); //za 'to date'
+   
+    setFromdate(moment(dates[0]).format('DD-MM-YYYY')); //podesen format za 'start date' on je na indeksu 0
+    setTodate(moment(dates[1]).format('DD-MM-YYYY')); //za 'to date'
     //moramo sad info o datumu proslijediti room komponenti, a to cemo prikazati u bookingscreen
     document.getElementById("select-list").disable = false
     var temprooms = [];
@@ -94,53 +111,97 @@ function Homescreen() {
         avaliability=0;
       }
       
-      temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
-      setrooms(temprooms);//prikazace samo slobodne sobe
-      setduplicaterooms(temprooms);
+      
+      setRooms(temprooms);//prikazace samo slobodne sobe
+      setDuplicaterooms(temprooms);
+      setCity('none');
     }
   
   }
  
   
 
-  function filterBySearch() {
+  function filterBySearch(e) {
+    
+    var temprooms = []
+    setCity(e)
+   if(e==='none')
+   {
    
-    const temprooms = rooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))//moramo sve prebaciti u lower case
-    setrooms(temprooms)
+   if(type!=='all')
+   {
+     temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===type.toLowerCase())
+     setRooms(temprooms)
+   }
+   else if(type==='all')
+   {
+      setRooms(duplicaterooms)
+   }
+  
+   }
+   else
+   {
+     temprooms = duplicaterooms.filter(room=>room.city.toLowerCase()===e.toLowerCase())
+     if(type!=='all')
+     {
+       temprooms = temprooms.filter(room=>room.type.toLowerCase()===type.toLowerCase())
+     }
+     setRooms(temprooms)
+   }
   }
 
   function filterByType(e) {
-    settype(e) //da prikaze u polju da li je ukljucen filter delux,non-delux ili all
+    
+    setType(e) //da prikaze u polju da li je ukljucen filter delux,non-delux ili all
     var temprooms = []
     if(e==='delux')
     {
+      
        temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
-      temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
-      setrooms(temprooms)
+       
+           if(city!=='none') 
+           {
+       temprooms = temprooms.filter(room=>room.city.toLowerCase().includes(city.toLowerCase()))
+           }
+      setRooms(temprooms)
+      
     }
     else if(e==='non-delux')
     {
+      
        temprooms = duplicaterooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())//ovo room je kao neka pomocna promjenjiva
-      temprooms = temprooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
-      setrooms(temprooms)
+      if(city!=='none')
+      {
+       temprooms = temprooms.filter(room=>room.city.toLowerCase().includes(city.toLowerCase()))
+       setRooms(temprooms)
+      }
+      else
+      {
+        setRooms(temprooms)
+      }
+      
+      
     }
     else if(e==='all'){
-      console.log(duplicaterooms)
-      temprooms = duplicaterooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
-      setrooms(temprooms)
+      
+      if(city!=='none')
+      {
+      temprooms = duplicaterooms.filter(room=>room.name.toLowerCase().includes(city.toLowerCase()))
+      setRooms(temprooms)
+      }
+      else
+      {
+        setRooms(duplicaterooms)
+      }
+     
+      
       
     }
   }
-  //f-ja za blokiranje backspace-a i delete-a
-  const preventBackspace = (event) => {
-    if(event.keyCode === 8 || event.keyCode === 46) {
-      event.preventDefault();
-  }
-  }
-
-                               /**className od div-ova je iz bootstrap */
+   /**className od div-ova je iz bootstrap */
   /**Prvo provjeravamo Loading pa rooms pa ako nije nista od toga true onda tek error da izbaci !(kad ubacimo filter search brisemo error) */
   /**.map()-koristimo da kreiramo listu od JSX elemenata */
+ 
   return (
     <div className="container">
       <div className="row mt-5 bs">
@@ -150,15 +211,25 @@ function Homescreen() {
 
         </div>
         <div className="col-md-4 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
-          <input type="text" id="search-filter" className="form-control mt-0" placeholder="pretraga" 
-          value={searchkey} onChange={(e)=> {setserachkey(e.target.value)}} onKeyUp={filterBySearch} onKeyDown={preventBackspace}/>
+        <select className="form-control" id="city-filter" value={city}  onChange={(e)=>{filterBySearch(e.target.value)}}>
+          <option value="none">Mjesto</option>
+            {cityroom && (
+              cityroom.map((room, index)=>{
+                return (
+                  <option key={index} value={room}>{room}</option>
+                )
+              })
+            )}
+            
+
+          </select>
 
         </div>
 
         <div className="col-md-3 mt-1 mb-1"
         style={{ display: "flex", alignItems: "center" }}>
           
-        <select className="form-control" id="select-list" value={type} onChange={(e)=>{filterByType(e.target.value)}}>
+        <select className="form-control" id="select-list" value={type}  onChange={(e)=>{filterByType(e.target.value)}}>
           <option value="all">Sve</option>
           <option value="delux">Delux</option>
           <option value="non-delux">Non-Delux</option>

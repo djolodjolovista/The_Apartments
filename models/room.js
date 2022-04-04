@@ -10,6 +10,10 @@ const roomSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    city: {
+        type: String,
+        required: true
+    },
     maxcount: {
         type: Number,
         required: true

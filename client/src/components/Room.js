@@ -25,7 +25,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
         <img src={room.imageurls[0]} alt="" className="smallimg" />
       </div>
       <div className="col-md-7">
-        <h1 style={{textAlign: 'cecdnter', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} >{room.name}</h1>
+        <h1 style={{textAlign: 'cecdnter', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} >{room.name} {room.city}</h1>
         
         <h3>{room.adress}</h3>
         
@@ -39,7 +39,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
 
           {(fromdate && todate && (test!==null)) && (
            <Link to={`/book/${room._id}/${fromdate}/${todate}`} >
-           <button className="btn btn-primary m-2" >Rezervisi</button>
+           <button className="btn btn-primary m-2" >Rezerviši</button>
          </Link>
         
   )}
@@ -52,7 +52,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
 
       <Modal show={show} onHide={handleClose} size='lg'>
         <Modal.Header>
-          <Modal.Title>{room.name}</Modal.Title>
+          <Modal.Title>{room.name} {room.city}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Carousel indicators={false} prevLabel='' nextLabel=''>
@@ -76,7 +76,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
         <Modal.Footer>
         <div class="modal-content">
      
-        <h3 className="text-center mt-1" style={{fontSize: "20px"}}><b>Cijena po danu :</b> {room.rentperday}</h3>
+        <h3 className="text-center mt-1" style={{fontSize: "20px"}}><b>Cijena po danu :</b> {room.rentperday} €</h3>
         
         </div>
           <Button variant="secondary" onClick={handleClose}>

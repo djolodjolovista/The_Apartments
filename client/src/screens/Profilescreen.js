@@ -113,7 +113,7 @@ export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti d
                         <p><b>ID rezervacije:</b> {booking._id}</p>
                         <p><b>Od:</b> {booking.fromdate}</p>
                         <p><b>Do:</b> {booking.todate}</p>
-                        <p><b>Iznos:</b> {booking.totalamount}</p>
+                        <p><b>Iznos:</b> {booking.totalamount} €</p>
                         <p><b>Status:</b> {booking.status=='cancelled' ? (<Tag color="red">OTKAZANO</Tag>) : (<Tag color="green">POTVRĐENO</Tag>)}</p>
 
                        {booking.status !== 'cancelled' && ( 

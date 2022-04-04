@@ -51,6 +51,7 @@ router.post("/bookroom", async (req, res) => {
         const newbooking = new Booking({
           //prvo kreiramo novi model i tu pisemo podatke koje cemo smjestiti u bazu
           room: room.name,
+          roomcity: room.city,
           roomid: room._id,
           userid, //userid,fromdate, todate... ostaje isti pa ne moramo pisati
           fromdate: moment(fromdate).format("DD-MM-YYYY"), //morali smo prvo instalirati 'npm i moment' na backend
