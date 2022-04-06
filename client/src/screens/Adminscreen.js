@@ -44,20 +44,20 @@ export default Adminscreen;
 //Bookings component (mogli smo i napraviti u folderu components pa importovati)
 export function Bookings() {
 
-    const [bookings, setbookings] = useState([])
-    const [loading, setloading] = useState(true)
-    const [error, seterror] = useState()
+    const [bookings, setBookings] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState()
    
     async function fetchData() {
         try {
             const data = (await axios.get('/api/bookings/getallbookings')).data
-            setbookings(data)
-            setloading(false)
+            setBookings(data)
+            setLoading(false)
               
         } catch (error) {
             console.log(error)
-            setloading(false)
-            seterror(true)
+            setLoading(false)
+            setError(true)
         }
     }
    
@@ -115,20 +115,20 @@ export function Bookings() {
 //Rooms component
 export function Rooms() {
 
-  const [rooms, setrooms] = useState([])
-  const [loading, setloading] = useState(true)
-  const [error, seterror] = useState()
+  const [rooms, setRooms] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState()
  
   async function fetchData() {
       try {
           const data = (await axios.get('/api/rooms/getallrooms')).data//ovaj api imamo vec za homescreen tako da ne moramo praviti na backendu samo taj iskoristimo
-          setrooms(data)
-          setloading(false)
+          setRooms(data)
+          setLoading(false)
             
       } catch (error) {
           console.log(error)
-          setloading(false)
-          seterror(true)
+          setLoading(false)
+          setError(true)
       }
   }
  
@@ -185,20 +185,20 @@ export function Rooms() {
 
 //Users component
 export function Users(){
-  const [users, setusers] = useState([])
-  const [loading, setloading] = useState(true)
-  const [error, seterror] = useState()
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState()
 
   async function fetchData() {
     try {
         const data = (await axios.get('/api/users/getallusers')).data
-        setusers(data)
-        setloading(false)
+        setUsers(data)
+        setLoading(false)
           
     } catch (error) {
         console.log(error)
-        setloading(false)
-        seterror(true)
+        setLoading(false)
+        setError(true)
     }
 }
 
@@ -250,20 +250,20 @@ return(
 
 export function AddRoom() {
 
-  const [loading, setloading] = useState(false)
-  const [error, seterror] = useState()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
-  const [name, setname] = useState('')
-  const [adress, setadress] = useState('')
+  const [name, setName] = useState('')
+  const [adress, setAdress] = useState('')
   const [city, setCity] = useState('')
-  const [rentperday, setrentperday] = useState()
-  const [maxcount, setmaxcount] = useState()
-  const [description, setdescription] = useState('')
-  const [phonenumber, setphonenumber] = useState('')
-  const [type, settype] = useState('')
-  const [imageurl1, setimageurl1] = useState('')
-  const [imageurl2, setimageurl2] = useState('')
-  const [imageurl3, setimageurl3] = useState('')
+  const [rentperday, setRentperday] = useState()
+  const [maxcount, setMaxcount] = useState()
+  const [description, setDescription] = useState('')
+  const [phonenumber, setPhonenumber] = useState('')
+  const [type, setType] = useState('')
+  const [imageurl1, setImageurl1] = useState('')
+  const [imageurl2, setImageurl2] = useState('')
+  const [imageurl3, setImageurl3] = useState('')
 
   async function addRoom(){//dodavanje nove sobe
     if(name!=='' && adress!=='' && city!=='' && rentperday!==undefined && maxcount!==undefined && description!==''
@@ -281,15 +281,15 @@ export function AddRoom() {
       imageurls: [imageurl1,imageurl2,imageurl3]
     }
     try {
-      setloading(true)
+      setLoading(true)
      const result = (await axios.post('/api/rooms/addroom', newroom)).data
      console.log(result)
-     setloading(false)
+     setLoading(false)
      Swal.fire('Čestitamo','Uspješno ste dodali novu sobu','success').then(result=>
       window.location.href="/home")
     } catch (error) {
       console.log(error)
-      setloading(false)
+      setLoading(false)
       Swal.fire('Oops','Nešto nije u redu','error')
     }
   }
@@ -305,33 +305,33 @@ export function AddRoom() {
       <div className='col-md-5'>
       {loading && (<Loader />)}
         <input type='text' className='form-control' placeholder='Naziv smještaja'
-        value={name} onChange={(e)=>{setname(e.target.value)}}/>
+        value={name} onChange={(e)=>{setName(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='Mjesto'
         value={city} onChange={(e)=>{setCity(e.target.value)}} />
         <input type='text' className='form-control' placeholder='Adresa'
-        value={adress} onChange={(e)=>{setadress(e.target.value)}}/>
+        value={adress} onChange={(e)=>{setAdress(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='Cijena po danu'
-        value={rentperday} onChange={(e)=>{setrentperday(e.target.value)}}/>
+        value={rentperday} onChange={(e)=>{setRentperday(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='Kapacitet'
-        value={maxcount} onChange={(e)=>{setmaxcount(e.target.value)}}/>
+        value={maxcount} onChange={(e)=>{setMaxcount(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='Opis'
-        value={description} onChange={(e)=>{setdescription(e.target.value)}}/>
+        value={description} onChange={(e)=>{setDescription(e.target.value)}}/>
         <input type='text' className='form-control' placeholder='Broj tel'
-        value={phonenumber} onChange={(e)=>{setphonenumber(e.target.value)}}/>
+        value={phonenumber} onChange={(e)=>{setPhonenumber(e.target.value)}}/>
 
       </div>
       <div className='col-md-5'>
-      <select className='form-control mt-2' value={type} onChange={(e)=>{settype(e.target.value)}}>
+      <select className='form-control mt-2' value={type} onChange={(e)=>{setType(e.target.value)}}>
         <option value='tip'>Tip</option>
         <option value='Delux'>Delux</option>
         <option value='Non-Delux'>Non-Delux</option>
       </select>
       <input type='text' className='form-control' placeholder='Slika 1 URL'
-      value={imageurl1} onChange={(e)=>{setimageurl1(e.target.value)}}/>
+      value={imageurl1} onChange={(e)=>{setImageurl1(e.target.value)}}/>
       <input type='text' className='form-control' placeholder='Slika 2 URL'
-      value={imageurl2} onChange={(e)=>{setimageurl2(e.target.value)}}/>
+      value={imageurl2} onChange={(e)=>{setImageurl2(e.target.value)}}/>
       <input type='text' className='form-control' placeholder='Slika 3 URL'
-      value={imageurl3} onChange={(e)=>{setimageurl3(e.target.value)}}/>
+      value={imageurl3} onChange={(e)=>{setImageurl3(e.target.value)}}/>
 
       <div className='text-right'>
         <button className='btn btn-primary mt-2' onClick={addRoom}>Dodaj sobu</button>

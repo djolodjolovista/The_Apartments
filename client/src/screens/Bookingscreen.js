@@ -15,19 +15,19 @@ AOS.init({
 });
 
 function Bookingscreen({ match }) {
-  const [loading, setloading] =
+  const [loading, setLoading] =
     useState(
       true
     ); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
-  const [error, seterror] = useState();
-  const [room, setroom] = useState();
+  const [error, setError] = useState();
+  const [room, setRoom] = useState();
 
   const roomid = match.params.roomid;
   const fromdate = moment(match.params.fromdate, "DD-MM-YYYY"); //moramo formatirati u moment formatu da bi mogli kasnije primjenjivati moment f-je
   const todate = moment(match.params.todate, "DD-MM-YYYY");
 
   const totaldays = moment.duration(todate.diff(fromdate, 'days')) + 1; //izracunava ukupan broj dana, diff razlika izmedju todate i fromdate
-  const [totalamount, settotalamount] = useState();
+  const [totalamount, setTotalamount] = useState();
  
   async function fetchData() {
     const test = JSON.parse(localStorage.getItem('currentUser'))
@@ -40,19 +40,19 @@ function Bookingscreen({ match }) {
    
     try {
     
-      setloading(true); /**API request je pokrenut */
+      setLoading(true); /**API request je pokrenut */
       const data = (
         await axios.post("/api/rooms/getroombyid", {
           roomid: match.params.roomid,
         })
       ).data;
 
-      setroom(data);
-      settotalamount(totaldays * data.rentperday);
-      setloading(false); /**API request je zavrsen */
+      setRoom(data);
+      setTotalamount(totaldays * data.rentperday);
+      setLoading(false); /**API request je zavrsen */
     } catch (error) {
-      setloading(false);
-      seterror(true);
+      setLoading(false);
+      setError(true);
     }
   }
 
@@ -76,14 +76,14 @@ function Bookingscreen({ match }) {
       token //da proslijedimo token zajedno u objektu bookingDetails, a mogli smo i posebno u axios.post
     };
     try {
-      setloading(true)
+      setLoading(true)
       const result = await axios.post("/api/bookings/bookroom", bookingDetails); //prvo napravimo bookingsRoute na backendu pa onda pisemo ovdje URL
-      setloading(false)                                                             //stavili smo ovaj url kao na backendu tj slican
+      setLoading(false)                                                             //stavili smo ovaj url kao na backendu tj slican
       Swal.fire('Čestitamo','Uspješna rezervacija','success').then(result =>{//success-parametar je tip popup-a                                                          //bookingDetails ce biti proslijeđen na backend
       window.location.href='/profile' //prebaci nas na stranicu bookings od korisnika
       })
       } catch (error) {                                                             
-      setloading(false)
+      setLoading(false)
       Swal.fire('Ops','Nešto nije u redu', 'error')
     }
   }

@@ -5,17 +5,17 @@ import Error from '../components/Error';
 import Success from '../components/Success';
 
 function Registerscreen() {
-    const [name, setname] = useState('')
-    const [email, setemail] = useState('')
-    const [password, setpassword] = useState('')
-    const [cpassword, setcpassword] = useState('')
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [cpassword, setCpassword] = useState('')
 
-    const [loading, setloading] = useState(false); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
-    const [error, seterror] = useState();
-    const [success, setsuccess] = useState();
+    const [loading, setLoading] = useState(false); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
+    const [error, setError] = useState();
+    const [success, setSuccess] = useState();
 
     async function register() {
-        if(password==cpassword)
+        if(password===cpassword)
         {
             const user = {
                 name,
@@ -24,22 +24,22 @@ function Registerscreen() {
                 cpassword
             }
             try {//ovo je API operacija
-                setloading(true);
+                setLoading(true);
                 const result = await ( axios.post("/api/users/register", user)).data
-                setloading(false);
-                setsuccess(true);
+                setLoading(false);
+                setSuccess(true);
 
                 //kada je registracija zavrsena moramo isprazniti input polja i izvrsiti reload page
                 //posto prikazujemo success message ne mozemo reload page nego ispraznicemo input polja
-                setname('');
-                setemail('');
-                setpassword('');
-                setcpassword('');
+                setName('');
+                setEmail('');
+                setPassword('');
+                setCpassword('');
                   
             } catch (error) {
                 console.log(error)
-                setloading(false);
-                seterror(true);
+                setLoading(false);
+                setError(true);
             }
         }
         else {
@@ -58,10 +58,10 @@ function Registerscreen() {
             {success && <Success message="Registracija uspješna" />/**message je props koji saljemo */ }
                 <div className='bs'>
                     <h2>Registracija</h2>
-                    <input type="text" className='form-control' placeholder='ime' value={name} onChange={(e)=>{setname(e.target.value)}} />
-                    <input type="text" className='form-control' placeholder='email' value={email} onChange={(e)=>{setemail(e.target.value)}} />
-                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-2' placeholder='šifra' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
-                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-2' placeholder='potvrdi šifru' value={cpassword} onChange={(e)=>{setcpassword(e.target.value)}} />
+                    <input type="text" className='form-control' placeholder='ime' value={name} onChange={(e)=>{setName(e.target.value)}} />
+                    <input type="text" className='form-control' placeholder='email' value={email} onChange={(e)=>{setEmail(e.target.value)}} />
+                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-2' placeholder='šifra' value={password} onChange={(e)=>{setPassword(e.target.value)}} />
+                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-2' placeholder='potvrdi šifru' value={cpassword} onChange={(e)=>{setCpassword(e.target.value)}} />
 
                     <button className='btn btn-primary mt-3' onClick={register}>Registracija</button>
                     

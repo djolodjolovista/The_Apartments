@@ -53,25 +53,25 @@ export default Profilescreen;
 export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti dosta vise logike nego za my profile
     
     const user = JSON.parse(localStorage.getItem('currentUser')) //trenutni korisnik
-    const [bookings, setbookings] = useState([])
-    const [loading, setloading] =
+    const [bookings, setBookings] = useState([])
+    const [loading, setLoading] =
     useState(
       false
     ); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
-  const [error, seterror] = useState();
+  const [error, setError] = useState();
 
     async function fetchData(){
 
         try {
-            setloading(true)
+            setLoading(true)
             const data = (await axios.post('/api/bookings/getbookingsbyuserid',{userid: user._id})).data //endpoint
         console.log(data)
-        setbookings(data)
-        setloading(false)
+        setBookings(data)
+        setLoading(false)
         } catch (error) {
             console.log(error)
-            setloading(false)
-            seterror(error)
+            setLoading(false)
+            setError(error)
         }
     }
     useEffect(()=>{
@@ -82,15 +82,15 @@ export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti d
 
     async function cancelBooking(bookingid, roomid) {
         try {
-            setloading(true)
+            setLoading(true)
             const result = (await axios.post('/api/bookings/cancelbooking',{bookingid, roomid})).data
             console.log(result)
-            setloading(false)
+            setLoading(false)
             Swal.fire('Čestitamo', 'Otkazali ste rezervaciju','success').then(result=>{
                 window.location.reload()
             })
         } catch (error) {
-            setloading(false)
+            setLoading(false)
             console.log(error)
             Swal.fire('Oops', 'Nešto nije u redu', 'error')
         }

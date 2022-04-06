@@ -5,10 +5,10 @@ import Error from '../components/Error';
 
 function Loginscreen() {
     
-    const [email, setemail] = useState('')
-    const [password, setpassword] = useState('')
-    const [loading, setloading] = useState(false); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
-    const [error, seterror] = useState();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
+    const [error, setError] = useState();
     
 
     async function Login() { //async jer koristimo await
@@ -21,9 +21,9 @@ function Loginscreen() {
                 
             }
             try {//ovo je API operacija
-                setloading(true);
+                setLoading(true);
                 const result =  (await axios.post("/api/users/login", user)).data//await uvijek pisi unutar zagrada jer nece raditi
-                setloading(false)
+                setLoading(false)
 
                 localStorage.setItem('currentUser', JSON.stringify(result));//JSON.stringify jer mora biti string
                 //prije navigacije na home page moramo sacuvati user-a na local storage
@@ -33,8 +33,8 @@ function Loginscreen() {
                   
             } catch (error) {
                 console.log(error)
-                setloading(false)
-                seterror(true)
+                setLoading(false)
+                setError(true)
                 
             }
             
@@ -52,8 +52,8 @@ function Loginscreen() {
                 <div className='bs'>
                     <h2>Prijava</h2>
                    
-                    <input type="text" className='form-control mt-3' placeholder='email' value={email} onChange={(e)=>{setemail(e.target.value)}} />
-                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-3' placeholder='šifra' value={password} onChange={(e)=>{setpassword(e.target.value)}} />
+                    <input type="text" className='form-control mt-3' placeholder='email' value={email} onChange={(e)=>{setEmail(e.target.value)}} />
+                    <input type="password" style={{fontFamily: "Verdana"}} className='form-control mt-3' placeholder='šifra' value={password} onChange={(e)=>{setPassword(e.target.value)}} />
                    
 
                     <button className='btn btn-primary mt-3' onClick={Login}>Prijava</button>

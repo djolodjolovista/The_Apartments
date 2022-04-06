@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    isAdmin : { /**Porvjera kad je user 'log in' da li je admin, ako jeste da omoguci admin panel */
+    isAdmin : { /**Provjera kad je user 'log in' da li je admin, ako jeste da omoguci admin panel */
         type: Boolean,
         default: false /**inicijalno je false */
     }

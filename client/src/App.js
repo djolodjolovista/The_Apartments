@@ -9,7 +9,8 @@ import Loginscreen from './screens/Loginscreen';
 import Profilescreen from './screens/Profilescreen';
 import Adminscreen from './screens/Adminscreen';
 import Landingscreen from './screens/Landingscreen';
-/**Route- Рута је условно приказана компонента заснована на подударању путање до УРЛ-а. */
+/**Route- ruta je uslovno prikazana komponenta zasnovana na podudaranju putanje do URL-a */
+
 ///:fromdate/:todate saljemo ih iz homescreen u bookingscreen kao props zato cemo i u Room morati navesti ta dva
 function App() {
   return (
@@ -29,4 +30,5 @@ function App() {
   );
 }
 
-export default App; /**In default export the naming of import is completely independent and we can use any name we like. */
+export default App; 
+/**export default- ime kod importovanja je nezavisno i možemo koristiti ime koje želimo */
