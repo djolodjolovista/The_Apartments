@@ -109,7 +109,7 @@ export function MyBookings() { //koristili smo odvojenu komponentu jer ce biti d
                     return (
                         <div className="col-md-6 pl-4 pr-4">
                     <div className="bs">
-                        <h1>{booking.room}</h1>
+                        <h1>{booking.room} {booking.roomcity}</h1>
                         <p><b>ID rezervacije:</b> {booking._id}</p>
                         <p><b>Od:</b> {booking.fromdate}</p>
                         <p><b>Do:</b> {booking.todate}</p>

@@ -16,7 +16,7 @@ function Homescreen() {
     useState(); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
   const [error, setError] = useState();
   const [cityroom, setCityroom] = useState([])
-  
+  const [disabled, setDisabled] = useState(false);
   //hooks za datume rezervacije
   const [fromdate, setFromdate] = useState();
   const [todate, setTodate] = useState();
@@ -32,7 +32,7 @@ function Homescreen() {
         
         setRooms(data);
         setDuplicaterooms(data);
-      
+       
     
         setLoading(false); /**API request je zavrsen */
         document.getElementById("select-list").setAttribute("disabled", "disabled")//filter type disabled dok se ne odabere datum
@@ -74,6 +74,7 @@ function Homescreen() {
     setTodate(moment(dates[1]).format('DD-MM-YYYY')); //za 'to date'
     //moramo sad info o datumu proslijediti room komponenti, a to cemo prikazati u bookingscreen
     document.getElementById("select-list").disable = false
+    
     var temprooms = [];
     var avaliability = 0;
     for(const room of duplicaterooms)
@@ -115,6 +116,7 @@ function Homescreen() {
       setRooms(temprooms);//prikazace samo slobodne sobe
       setDuplicaterooms(temprooms);
       setCity('none');
+      setDisabled(true);
     }
   
   }
@@ -186,7 +188,7 @@ function Homescreen() {
       
       if(city!=='none')
       {
-      temprooms = duplicaterooms.filter(room=>room.name.toLowerCase().includes(city.toLowerCase()))
+      temprooms = duplicaterooms.filter(room=>room.city.toLowerCase().includes(city.toLowerCase()))
       setRooms(temprooms)
       }
       else
@@ -207,7 +209,7 @@ function Homescreen() {
       <div className="row mt-5 bs">
         <div className="col-md-3 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
 
-        <RangePicker allowClear={false} format="DD-MM-YYYY" onChange={filterByDate} />
+        <RangePicker disabled={disabled} allowClear={false} format="DD-MM-YYYY" onChange={filterByDate} />
 
         </div>
         <div className="col-md-4 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
