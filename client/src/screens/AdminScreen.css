@@ -1,0 +1,26 @@
+.users-table td {
+    background-color: #343a40;
+    color: white;
+    border: 1px solid #525252;;
+    padding-left: 10px;
+}
+
+.users-table th {
+    background-color: #343a40;
+    color: white;
+    border: 1px solid #525252;;
+    border-bottom: 2px solid #525252;;
+    padding-left: 10px;
+    
+}
+
+.users-table {
+    background-color: #343a40;
+    color: white;
+    border: 1px solid #525252;
+    width: 100%;
+    line-height: 45px;
+    text-align: left;
+    
+}
+

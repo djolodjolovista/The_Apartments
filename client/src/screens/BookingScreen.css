@@ -1,0 +1,43 @@
+.flex-container {
+    
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 30px;
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    
+}
+
+.button {
+    color: white;
+    background-color: black;
+}
+
+.reservation-details {
+    text-align: right;
+}
+
+.big-img {
+    width: 100%;
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.container1 {
+    width: 50%;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+#headline {
+    padding-top: 10px;
+    margin-left: 10px;
+}
+
+.card {
+    margin-top: 40px;
+    border: none;
+}
+

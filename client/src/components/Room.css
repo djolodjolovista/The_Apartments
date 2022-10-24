@@ -1,0 +1,60 @@
+.flex-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+}
+
+.small-image {
+    width: 190px;
+    height: 210px;
+    border-radius: 15px;
+    padding-top: 8px;
+    padding-bottom: 5px;
+    padding-left: 8px;
+
+}
+
+.item {
+    width: 300px;
+    padding-top: 8px;
+    padding-bottom: 5px;
+    padding-left: 8px;
+}
+
+.button {
+    border-radius: 3px;
+    color: white;
+    background-color: black;
+    padding: 6px 12px;
+    margin-bottom: 15px;
+    margin-left: 4px;
+    margin-right: 6px;
+}
+
+.card-heading {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.big-img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.price {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+   
+}
+
+#price-text {
+    text-align: center;
+    margin-top: 10px;
+}

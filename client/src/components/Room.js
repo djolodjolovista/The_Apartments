@@ -3,6 +3,7 @@ import {Modal, Button, Carousel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; //aos google pa github za css
+import './Room.css';
 
 // ..
 AOS.init({
@@ -19,13 +20,15 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
   const handleClose = () => setShow(false); /**da zatvorimo popup model (View Details) */
   const handleShow = () => setShow(true); /**koristimo da prikaze model popup (button View Details) */
   const test = JSON.parse(localStorage.getItem('currentUser'))
+  //className="row bs mr-1 ml-1"
   return (
-    <div className="row bs mr-1 ml-1" data-aos='fade-up'>
-      <div className="col-md-4">
-        <img src={room.imageurls[0]} alt="" className="smallimg" />
+    <div className="flex-container" data-aos='fade-up'>
+      <div>
+        <img src={room.imageurls[0]} alt="" className="small-image" />
       </div>
-      <div className="col-md-7">
-        <h1 style={{textAlign: 'cecdnter', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} >{room.name} {room.city}</h1>
+      <div >
+      <div className="item">
+        <h1 className="card-heading" >{room.name} {room.city}</h1>
         
         <h3>{room.adress}</h3>
         
@@ -39,13 +42,13 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
 
           {(fromdate && todate && (test!==null)) && (
            <Link to={`/book/${room._id}/${fromdate}/${todate}`} >
-           <button className="btn btn-primary m-2" >Rezerviši</button>
+           <button className="button" >Rezerviši</button>
          </Link>
         
   )}
 
          
-          <button className="btn btn-primary" onClick={handleShow}>Pregled detalja</button>
+          <button className="button" onClick={handleShow}>Pregled detalja</button>
         </div>
       </div>
       
@@ -62,7 +65,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
                     return (
                         <Carousel.Item key={index}>
     <img key={index}
-      className="d-block w-100 bigimg"
+      className="big-img"
       src={url}
       alt=""
     />
@@ -74,9 +77,9 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
         <p>{room.description}</p>
         </Modal.Body>
         <Modal.Footer>
-        <div class="modal-content">
+        <div className="price">
      
-        <h3 className="text-center mt-1" style={{fontSize: "20px"}}><b>Cijena po danu :</b> {room.rentperday} €</h3>
+        <h3 id="price-text" style={{fontSize: "20px"}}><b>Cijena po danu :</b> {room.rentperday} €</h3>
         
         </div>
           <Button variant="secondary" onClick={handleClose}>
@@ -87,6 +90,7 @@ function Room({ room, fromdate, todate}) { /**room je prop (takodje i fromdate i
           
         </Modal.Footer>
       </Modal>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import Room from "../components/Room";
 import Loader from "../components/Loader";
@@ -6,11 +6,13 @@ import Error from "../components/Error";
 import { DatePicker, Space } from 'antd'; 
 import 'antd/dist/antd.css'; //importovanje css-a za date picker
 import moment from 'moment';
+import './HomeScreen.css';
 
 
 const { RangePicker } = DatePicker;
 
 function Homescreen() {
+  
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] =
     useState(); /**kada je api request pokrenut loading=true, kada je zavrsen loading=false */
@@ -24,6 +26,18 @@ function Homescreen() {
  
   const [type, setType] = useState('all') //za type filter inicijalno postavljen na all
   const [city, setCity] = useState('none')
+
+  const expensiveCalculation = () => {
+    console.log("Calculating...");
+    let num = 0;
+    for (let i = 0; i < 1000000000; i++) {
+      num += 1;
+      
+    }
+  }
+    const calculation = useMemo(expensiveCalculation, []);
+    //const calculation = expensiveCalculation();
+  
     async function fetchData() {
       try {
         setLoading(true); /**API request je pokrenut */
@@ -199,18 +213,23 @@ function Homescreen() {
       
       
     }
+   
   }
    /**className od div-ova je iz bootstrap */
   /**Prvo provjeravamo Loading pa rooms pa ako nije nista od toga true onda tek error da izbaci !(kad ubacimo filter search brisemo error) */
   /**.map()-koristimo da kreiramo listu od JSX elemenata */
- 
+  
+
+
+   
+  
   return (
     <div className="container">
       <div className="row mt-5 bs">
         <div className="col-md-3 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
 
         <RangePicker disabled={disabled} allowClear={false} format="DD-MM-YYYY" onChange={filterByDate} />
-
+        
         </div>
         <div className="col-md-4 mt-1 mb-1" style={{ display: "flex", alignItems: "center" }}>
         <select className="form-control" id="city-filter" value={city}  onChange={(e)=>{filterBySearch(e.target.value)}}>
@@ -242,15 +261,19 @@ function Homescreen() {
           <button className="btn btn-primary w-100" onClick={()=>{window.location.reload()}}>Obriši</button></div>
 
       </div>
-      <div className="row justify-content-center mt-5 pb-5">  
+      <div className="main-container">  
+      
         {loading ? (
           <Loader />
         ) : (
           rooms.map((room) => {
             return (
-                <div key={room._id} className="col-md-6 p-1 mt-2">
+                <div key={room._id} className="cards">
                     <Room room={room} fromdate={fromdate} todate={todate} />
+                    <div style={{marginLeft: "30px"}}>
+                    {calculation}
 
+      </div>
                 </div>
             );
           })

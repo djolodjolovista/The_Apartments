@@ -7,6 +7,7 @@ import StripeCheckout from "react-stripe-checkout";
 import Swal from "sweetalert2";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; //aos google pa github za css
+import './BookingScreen.css';
 
 
 // ..
@@ -90,23 +91,23 @@ function Bookingscreen({ match }) {
 
   /**Prvo provjeravamo loading pa onda room pa ako nista od toga nije true onda tek nek izbaci error ! */
   return (
-    <div className="m-5" data-aos='flip-left'>
+    <div data-aos='flip-left'>
       {loading ? (
         <Loader />
       ) : room ? (
-        <div>
-          <div className="row justify-content-center mt-5 bs">
-            <div className="col-md-6">
-              <h1>{room.name} {room.city}</h1>
+        <div className="card">
+          <div className="flex-container">
+            <div style={{width:"60%"}}>
+              <h1 id="headline">{room.name} {room.city}</h1>
               <img
                 src={room.imageurls[0]}
                 alt=""
-                className="bigimg img-fluid"
+                className="big-img"
               />
             </div>
 
-            <div className="col-md-6">
-              <div style={{ textAlign: "right" }}>
+            <div className="container1">
+              <div className="reservation-details">
                 <h1>Detalji rezervacije</h1>
                 <hr />
 
@@ -118,7 +119,7 @@ function Bookingscreen({ match }) {
                 </b>
               </div>
 
-              <div style={{ textAlign: "right" }}>
+              <div className="reservation-details">
                 <b>
                   <h1>Iznos</h1>
                   <hr />
@@ -138,7 +139,7 @@ function Bookingscreen({ match }) {
                   token={onToken}
                   stripeKey="pk_test_51KbXOeB42lm3IJrhusf5fxHnQruPSrVad3tjYExgSGYslH81eDScnDchhIY2udy6i2k3E8gEzwl5nVGyNzdqKO4h00eedwAxoH"
                 >
-                  <button className="btn btn-primary">Plati</button>
+                  <button className="button">Plati</button>
                 </StripeCheckout>
               </div>
             </div>

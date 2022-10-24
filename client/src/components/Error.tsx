@@ -1,10 +1,12 @@
+
 import React from "react";
 /**Koristili smo alert bootstrap */
 
-function Error({message}) {
+
+const Error =({message}:{message: string}) => {
   return (
     <div>
-      <div class="alert alert-danger" role="alert">
+      <div className="alert alert-danger" role="alert">
         {message}
       </div>
     </div>
