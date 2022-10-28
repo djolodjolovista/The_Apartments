@@ -19,7 +19,7 @@ const UsersTab = () => {
   async function fetchData() {
     try {
         //const data = (await axios.get('/api/users/getallusers')).data
-        await api.getAllUsers().then((res) => data = res.data)
+        data = (await api.getAllUsers()).data
         setUsers(data)
         setLoading(false)
           
@@ -55,10 +55,10 @@ useEffect(() => {
           {users && (users.map(user=>{
     return (
       <tr>
-        <td>{user['_id']}</td>
-        <td>{user['name']}</td>
-        <td>{user['email']}</td>
-        <td>{user['isAdmin'] ? ("YES") : ("NO")}</td>
+        <td>{user._id}</td>
+        <td>{user.name}</td>
+        <td>{user.email}</td>
+        <td>{user.isAdmin ? ("YES") : ("NO")}</td>
       </tr>
     )
   }))}

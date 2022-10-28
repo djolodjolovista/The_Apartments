@@ -1,12 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import Loader from '../../components/Loader'; 
 import {api} from '../Utils/ApiRequests';
 
-
-
-const BookingTab = () => {
-
-    interface BookingType {
+interface BookingType {
         _id: any;
         room: string;
         roomcity: string;
@@ -20,6 +16,10 @@ const BookingTab = () => {
         status: string;
     }
 
+const BookingTab = () => {
+
+    
+
     
 
     const [bookings, setBookings] = useState<BookingType[]>([])
@@ -30,7 +30,7 @@ const BookingTab = () => {
     async function fetchData() {
         try {
             //const data = (await axios.get('/api/bookings/getallbookings')).data
-            data = await api.getAllBookings().then((res) => data = res.data)
+            data = (await api.getAllBookings()).data
             setBookings(data)
             setLoading(false)
               
@@ -41,7 +41,12 @@ const BookingTab = () => {
         }
     }
 
-    
+   
+    const totalAmount = () =>{
+        console.log("test");
+        return bookings.map(booking => booking.totalamount).reduce((a,b) => a+b, 0);
+        
+    }
    
    
    
@@ -50,6 +55,9 @@ const BookingTab = () => {
         fetchData();
       
     }, [])
+
+   // const sum = useMemo(totalAmount, [bookings])
+    const sum = totalAmount();
 
   return (
     <div className="row">
@@ -73,18 +81,21 @@ const BookingTab = () => {
                 {bookings.length && (bookings.map(booking=>{
                 return (
                 <tr>
-                    <td>{booking['_id']}</td>
-                    <td>{booking['userid']}</td>
-                    <td style={{whiteSpace:'nowrap'}}>{booking['room']}</td>
-                    <td style={{whiteSpace:'nowrap'}}>{booking['roomcity']}</td>
-                    <td style={{whiteSpace:'nowrap'}}>{booking['fromdate']}</td>
-                    <td style={{whiteSpace:'nowrap'}}>{booking['todate']}</td>
+                    <td>{booking._id}</td>
+                    <td>{booking.userid}</td>
+                    <td style={{whiteSpace:'nowrap'}}>{booking.room}</td>
+                    <td style={{whiteSpace:'nowrap'}}>{booking.roomcity}</td>
+                    <td style={{whiteSpace:'nowrap'}}>{booking.fromdate}</td>
+                    <td style={{whiteSpace:'nowrap'}}>{booking.todate}</td>
                     {booking['status'] === "booked" ? (<td>Potvrđeno</td>) : (<td>Otkazano</td>)}
                 </tr>
                 )}
                 ))}
                 </tbody>
             </table>
+            <div>
+                <h4>Ukupna suma: {sum.toFixed(2)}€</h4>
+            </div>
             
         </div>
       
